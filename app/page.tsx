@@ -47,7 +47,7 @@ export default function Home() {
 
 					<div className='mt-8'>
 						<OrderForm
-							image={uploadedImage}
+							image={uploadedImage ?? ''}
 							frame={selectedFrame}
 							size={selectedSize}
 							room={selectedRoom}

@@ -26,12 +26,12 @@ declare type SizeSelectorProps = {
 	onSelect: (size: string) => void;
 };
 
-declare type OrderFormProps = {
-	image: string | null;
+declare interface OrderFormProps {
+	image: File | string;
 	frame: string;
 	size: string;
 	room: string;
-};
+}
 
 // ADMIN
 declare type Order = {
