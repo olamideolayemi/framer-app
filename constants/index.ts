@@ -29,6 +29,7 @@ export const ROOM_OPTIONS = [
 	{ name: 'Living Room', value: 'living-room.jpg' },
 	{ name: 'Office', value: 'office.jpg' },
 	{ name: 'Bedroom', value: 'bedroom.jpg' },
+	{ name: 'Kitchen', value: 'kitchen.jpg' },
 ];
 
 export const FRAME_OPTIONS = ['black', 'wood', 'gold'];

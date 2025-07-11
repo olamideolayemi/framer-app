@@ -109,7 +109,7 @@ export default function AdminDashboard() {
 								<strong>Name:</strong> {order.name}
 							</p>
 							<p>
-								<strong>Contact:</strong> {order.contact}
+								<strong>Email:</strong> {order.email}
 							</p>
 							<p>
 								<strong>Address:</strong> {order.address}

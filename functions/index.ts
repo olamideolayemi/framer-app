@@ -10,8 +10,8 @@ admin.initializeApp();
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
-		user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+		user: process.env.NEXT_PUBLIC_EMAIL_USER,
+		pass: process.env.NEXT_PUBLIC_EMAIL_PASS,
 	},
 });
 
@@ -22,7 +22,7 @@ exports.sendOrderConfirmation = functions.firestore
 
 		const mailOptions = {
 			from: 'Frame Lane <your-email@gmail.com>',
-			to: order.contact, // This should be an email field from your form
+			to: order.email, // This should be an email field from your form
 			subject: '🖼️ Your Frame Order Confirmation',
 			html: `
         <h3>Hi ${order.name},</h3>
@@ -40,7 +40,7 @@ exports.sendOrderConfirmation = functions.firestore
 
 		try {
 			await transporter.sendMail(mailOptions);
-			console.log('Email sent to', order.contact);
+			console.log('Email sent to', order.email);
 		} catch (error) {
 			console.error('Failed to send email:', error);
 		}

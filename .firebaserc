@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "framer-app-6e2ea"
-  }
+    "default": "framer-app-6e2ea",
+    "staging": "framer-app-6e2ea"
+  },
+  "targets": {},
+  "etags": {}
 }

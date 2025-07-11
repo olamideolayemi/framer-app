@@ -16,7 +16,7 @@ export default function TrackOrder() {
 
 		const filtered = allOrders.filter(
 			(order) =>
-				order.contact.includes(query) ||
+				order.email.includes(query) ||
 				order.name.toLowerCase().includes(query.toLowerCase()),
 		);
 
@@ -54,7 +54,7 @@ export default function TrackOrder() {
 								<strong>Name:</strong> {order.name}
 							</p>
 							<p>
-								<strong>Phone:</strong> {order.contact}
+								<strong>Phone:</strong> {order.phone}
 							</p>
 							<p>
 								<strong>Status:</strong> {order.status}

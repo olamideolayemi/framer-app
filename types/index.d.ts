@@ -37,6 +37,7 @@ declare interface OrderFormProps {
 declare type Order = {
 	name: string;
 	contact: string;
+	email: string;
 	address: string;
 	frame: string;
 	size: string;
