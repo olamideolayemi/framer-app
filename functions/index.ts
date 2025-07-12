@@ -1,3 +1,5 @@
+import { defineSecret } from 'firebase-functions/params';
+
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
@@ -6,19 +8,31 @@ require('dotenv').config();
 
 admin.initializeApp();
 
+const gmailUser = defineSecret('GMAIL_USER');
+const gmailPass = defineSecret('GMAIL_PASS');
+
 // 🔐 Use Gmail or a custom SMTP
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
-		user: process.env.NEXT_PUBLIC_EMAIL_USER,
-		pass: process.env.NEXT_PUBLIC_EMAIL_PASS,
+		user: gmailUser,
+		pass: gmailPass,
 	},
 });
 
-exports.sendOrderConfirmation = functions.firestore
-	.document('orders/{orderId}')
-	.onCreate(async (snap: { data: () => any }, context: any) => {
-		const order = snap.data();
+export const sendOrderConfirmation = functions
+  .runWith({ secrets: ['GMAIL_USER', 'GMAIL_PASS'] })
+  .firestore.document('orders/{orderId}')
+  .onCreate(async (snap: { data: () => any; }) => {
+    const order = snap.data();
+
+		const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: gmailUser.value(),
+        pass: gmailPass.value(),
+      },
+    });
 
 		const mailOptions = {
 			from: 'Frame Lane <your-email@gmail.com>',

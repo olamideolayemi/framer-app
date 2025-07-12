@@ -14,6 +14,8 @@ import {
 	updateDoc,
 } from 'firebase/firestore';
 import ExportButton from '@/components/ExportButton';
+import LogoutButton from '@/components/LogoutButton';
+import TestOrderButton from '@/components/TestOrder';
 
 export default function AdminDashboard() {
 	const [orders, setOrders] = useState<Order[]>([]);
@@ -45,18 +47,23 @@ export default function AdminDashboard() {
 			const adminRef = doc(db, 'admins', user.email || '');
 			const adminSnap = await getDoc(adminRef);
 
-			if (!adminSnap.exists()) {
-				// Log unauthorized access
-				await setDoc(
-					doc(collection(db, 'unauthorized_access')),
-					{
-						email: user.email,
-						attemptedAt: serverTimestamp(),
-						userAgent: navigator.userAgent,
-					},
-					{ merge: true },
-				);
-
+			try {
+				const adminSnap = await getDoc(adminRef);
+				if (!adminSnap.exists()) {
+					await setDoc(
+						doc(collection(db, 'unauthorized_access')),
+						{
+							email: user.email,
+							attemptedAt: serverTimestamp(),
+							userAgent: navigator.userAgent,
+						},
+						{ merge: true },
+					);
+					setDenied(true);
+					return;
+				}
+			} catch (error) {
+				console.error('Admin check failed:', error);
 				setDenied(true);
 				return;
 			}
@@ -74,11 +81,6 @@ export default function AdminDashboard() {
 		return () => unsubscribe();
 	}, [router]);
 
-	const handleLogout = async () => {
-		await signOut(auth);
-		router.push('/admin/login');
-	};
-
 	if (denied) {
 		return (
 			<div className='p-6 text-red-600 font-semibold'>
@@ -94,7 +96,13 @@ export default function AdminDashboard() {
 	return (
 		<div className='p-6'>
 			<h1 className='text-2xl font-bold mb-4'>📦 Orders Dashboard</h1>
-			<ExportButton />
+			<div className='flex items-center justify-between'>
+				<ExportButton />
+				<TestOrderButton />
+				<button>
+					<LogoutButton />
+				</button>
+			</div>
 
 			<div className='space-y-6'>
 				{orders.length === 0 ? (
@@ -103,7 +111,7 @@ export default function AdminDashboard() {
 					orders.map((order, i) => (
 						<div
 							key={i}
-							className='bg-white p-4 rounded shadow border'
+							className='bg-white text-black p-4 rounded shadow border'
 						>
 							<p>
 								<strong>Name:</strong> {order.name}
@@ -146,14 +154,17 @@ export default function AdminDashboard() {
 								<option value='In Progress'>In Progress</option>
 								<option value='Shipped'>Shipped</option>
 							</select>
-							<img
-								src={order.image}
-								alt='Uploaded'
-								className='mt-4 w-48 border'
-							/>
-							<p className='text-xs text-gray-500 mt-2'>
-								Created: {new Date(order.createdAt).toLocaleString()}
-							</p>
+							{order.image ? (
+								<img
+									src={order.image}
+									alt='Uploaded'
+									className='mt-4 w-48 border'
+								/>
+							) : (
+								<p className='mt-4 text-sm text-gray-500 italic'>
+									No image uploaded
+								</p>
+							)}
 						</div>
 					))
 				)}

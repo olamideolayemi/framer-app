@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { storage, db } from '@/lib/firebase';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
@@ -44,6 +44,7 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 
 		try {
 			await addDoc(collection(db, 'orders'), orderData);
+			await setDoc(doc(db, 'orders', `test-order-${Date.now()}`), orderData);
 			setSubmitted(true);
 		} catch (error) {
 			console.error('Error saving order:', error);
@@ -78,11 +79,12 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 			/>
 
 			<input
-				type='text'
-				placeholder='Phone or Email'
+				type='tel'
+				placeholder='Phone'
 				value={phone}
 				onChange={(e) => setPhone(e.target.value)}
 				className='w-full border p-2 rounded'
+				autoComplete='true'
 				required
 			/>
 
@@ -91,6 +93,8 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 				placeholder='Email Address'
 				value={email}
 				onChange={(e) => setEmail(e.target.value)}
+				className='w-full border p-2 rounded'
+				autoComplete='true'
 				required
 			/>
 
