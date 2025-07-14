@@ -1,23 +1,45 @@
-import { SIZE_OPTIONS } from "@/constants";
+import { SIZE_OPTIONS } from '@/constants';
+import { PRICING } from '@/constants/pricing';
+import { ArrowRight } from 'lucide-react';
 
 const SizeSelector = ({ selected, onSelect }: SizeSelectorProps) => {
 	return (
-		<div className='mb-6'>
-			<label className='block mb-2 font-medium text-gray-700'>
-				Choose Frame Size
-			</label>
-			<div className='flex flex-wrap gap-2'>
+		<div className='mb-8'>
+			<h3 className='text-xl font-bold text-gray-800 mb-4 flex items-center gap-2'>
+				<ArrowRight className='w-5 h-5 text-[#34c4a2]' />
+				Size & Pricing
+			</h3>
+
+			<div className='space-y-3'>
 				{SIZE_OPTIONS.map((size) => (
 					<button
 						key={size}
 						onClick={() => onSelect(size)}
-						className={`px-3 py-2 rounded border text-sm transition ${
+						className={`w-full p-4 rounded-2xl border-2 transition-all duration-300 hover:scale-105 ${
 							selected === size
-								? 'bg-gray-800 text-white border-gray-900'
-								: 'bg-white text-gray-800 border-gray-400'
+								? 'border-[#457b6e] bg-indigo-50 shadow-lg'
+								: 'border-gray-200 hover:border-[#d5e7e3]'
 						}`}
 					>
-						{size}
+						<div className='flex items-center justify-between'>
+							<div className='flex items-center space-x-3'>
+								<div className='w-8 h-8 bg-gradient-to-br from-[#3f9b85] to-[#457b6e] rounded-lg flex items-center justify-center'>
+									<span className='text-white font-bold text-xs'>
+										{size.charAt(1)}
+									</span>
+								</div>
+								<div>
+									<p className='font-medium text-gray-800'>{size}</p>
+									<p className='text-sm text-gray-500'>Premium quality print</p>
+								</div>
+							</div>
+							<div className='text-right'>
+								<p className='text-2xl font-bold text-[#34c4a2]'>
+									₦{PRICING[size as keyof typeof PRICING]}
+								</p>
+								<p className='text-sm text-gray-500'>Free shipping</p>
+							</div>
+						</div>
 					</button>
 				))}
 			</div>

@@ -6,11 +6,12 @@ declare type FrameSelectorProps = {
 };
 
 declare type ImageUploaderProps = {
-	onUpload: (imgUrl: string) => void;
+	onUpload: (imageUrl: File | string) => void;
+	uploadedImage: File | string;
 };
 
 declare type FramePreviewProps = {
-	image: string | null;
+	image: File | string;
 	frame: string;
 	room: string;
 	size: string;
@@ -38,12 +39,35 @@ declare type Order = {
 	name: string;
 	contact: string;
 	email: string;
+	phone: string;
 	address: string;
 	frame: string;
 	size: string;
 	room: string;
-	image: string;
-	status: string;
-	createdAt: string;
+	image?: string | File;
+	status: OrderStatus;
+	createdAt?: { seconds: number; nanoseconds?: number } | number | null;
 	id?: string;
 };
+
+declare type Timestamp = { seconds: number; nanoseconds?: number };
+
+declare type OrderCardProps = {
+	order: Order;
+	onStatusChange: (id: string, status: string) => void;
+};
+
+declare type StatCardProps = {
+	title: string;
+	value: string | number;
+	icon: React.ComponentType<{ className?: string }>;
+	change?: string;
+	trend?: 'up' | 'down';
+};
+
+declare type OrderStatus =
+	| 'Pending'
+	| 'In Progress'
+	| 'Shipped'
+	| 'Delivered'
+	| 'Cancelled';

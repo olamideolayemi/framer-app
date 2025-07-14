@@ -26,31 +26,46 @@ export const FRAME_STYLES: Record<string, string> = {
 };
 
 export const ROOM_OPTIONS = [
-	{ name: 'Living Room', value: 'living-room.jpg' },
-	{ name: 'Office', value: 'office.jpg' },
-	{ name: 'Bedroom', value: 'bedroom.jpg' },
-	{ name: 'Kitchen', value: 'kitchen.jpg' },
+	{
+		name: 'Living Room',
+		value: 'living-room.jpg',
+		image: '/rooms/living-room.jpg',
+	},
+	{ name: 'Office', value: 'office.jpg', image: '/rooms/office.jpg' },
+	{ name: 'Bedroom', value: 'bedroom.jpg', image: '/rooms/bedroom.jpg' },
+	{ name: 'Kitchen', value: 'kitchen.jpg', image: '/rooms/kitchen.jpg' },
 ];
+
+// export const FRAME_OPTIONS = [
+// 	{
+// 		name: 'Living Room',
+// 		value: 'living-room.jpg',
+// 		image: '/rooms/living-room.jpg',
+// 	},
+// 	{ name: 'Office', value: 'office.jpg', image: '/rooms/office.jpg' },
+// 	{ name: 'Bedroom', value: 'bedroom.jpg', image: '/rooms/bedroom.jpg' },
+// 	{ name: 'Kitchen', value: 'kitchen.jpg', image: '/rooms/kitchen.jpg' },
+// ];
 
 export const FRAME_OPTIONS = ['black', 'wood', 'gold'];
 
 export const SIZE_OPTIONS = [
-  '5x7 in',
-  '6x9 in',
-  'A4 (8x12 in)',
-  '10x13 in',
-  '11x14 in',
-  '12x16 in',
-  '14x18 in',
-  '16x20 in',
-  '16x24 in',
-  '18x24 in',
-  '20x24 in',
-  '20x30 in',
-  '21x37 in',
-  '24x30 in',
-  '24x36 in',
-  '27x40 in',
-  '30x40 in',
-  '36x48 in'
+	'5x7 in',
+	'6x9 in',
+	'A4 (8x12 in)',
+	'10x13 in',
+	'11x14 in',
+	'12x16 in',
+	'14x18 in',
+	'16x20 in',
+	'16x24 in',
+	'18x24 in',
+	'20x24 in',
+	'20x30 in',
+	'21x37 in',
+	'24x30 in',
+	'24x36 in',
+	'27x40 in',
+	'30x40 in',
+	'36x48 in',
 ];

@@ -6,7 +6,11 @@ module.exports = {
 		'./components/**/*.{js,ts,jsx,tsx}',
 	],
 	theme: {
-		extend: {},
+		extend: {
+			colors: {
+				'teal-custom': '#457b6e',
+			},
+		},
 	},
 	variants: {
 		extend: {},

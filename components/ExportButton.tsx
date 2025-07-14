@@ -16,7 +16,7 @@ export default function ExportButton() {
   return (
     <button
       onClick={exportOrders}
-      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      className="bg-[#457b6e] text-white px-4 py-2 rounded hover:bg-[#2f554c]"
     >
       🧾 Export Orders (CSV)
     </button>

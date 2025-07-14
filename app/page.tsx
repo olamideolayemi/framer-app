@@ -7,47 +7,57 @@ import FramePreview from '../components/FramePreview';
 import RoomSelector from '../components/RoomSelector';
 import SizeSelector from '../components/SizeSelector';
 import OrderForm from '../components/OrderForm';
+import Footer from './pages/Footer';
+import Header from './pages/Header';
+import Hero from './pages/Hero';
 
 export default function Home() {
-	const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-	const [selectedFrame, setSelectedFrame] = useState<string>('black');
-	const [selectedRoom, setSelectedRoom] = useState<string>('living-room.jpg');
-	const [selectedSize, setSelectedSize] = useState<string>('A4 (8x12 in)');
+	const [uploadedImage, setUploadedImage] = useState<string | File>('');
+	const [selectedFrame, setSelectedFrame] = useState('black');
+	const [selectedRoom, setSelectedRoom] = useState('living-room.jpg');
+	const [selectedSize, setSelectedSize] = useState('A4 (8x12 in)');
 
 	return (
-		<div className='min-h-screen bg-gray-100 p-6'>
-			<h1 className='text-3xl font-bold mb-6 text-center'>
-				🖼️ Frame Your Photo
-			</h1>
+		<div className='min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50'>
+			{/* Header */}
+			<Header />
 
-			<div className='max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8'>
-				<div>
-					<ImageUploader onUpload={setUploadedImage} />
-					<FrameSelector
-						selected={selectedFrame}
-						onSelect={setSelectedFrame}
-					/>
-					<RoomSelector
-						selected={selectedRoom}
-						onSelect={setSelectedRoom}
-					/>
-					<SizeSelector
-						selected={selectedSize}
-						onSelect={setSelectedSize}
-					/>
-				</div>
+			{/* Hero Section */}
+			<div className='max-w-7xl mx-auto px-6 py-12'>
+				<Hero />
 
-				<div>
-					<FramePreview
-						image={uploadedImage}
-						frame={selectedFrame}
-						room={selectedRoom}
-						size={selectedSize}
-					/>
+				{/* Main Content */}
+				<div className='grid grid-cols-1 lg:grid-cols-2 gap-12'>
+					{/* Left Panel - Configuration */}
+					<div className='space-y-8'>
+						<ImageUploader
+							onUpload={setUploadedImage}
+							uploadedImage={uploadedImage}
+						/>
+						<FrameSelector
+							selected={selectedFrame}
+							onSelect={setSelectedFrame}
+						/>
+						<RoomSelector
+							selected={selectedRoom}
+							onSelect={setSelectedRoom}
+						/>
+						<SizeSelector
+							selected={selectedSize}
+							onSelect={setSelectedSize}
+						/>
+					</div>
 
-					<div className='mt-8'>
+					{/* Right Panel - Preview & Order */}
+					<div className='space-y-8'>
+						<FramePreview
+							image={uploadedImage}
+							frame={selectedFrame}
+							room={selectedRoom}
+							size={selectedSize}
+						/>
 						<OrderForm
-							image={uploadedImage ?? ''}
+							image={uploadedImage}
 							frame={selectedFrame}
 							size={selectedSize}
 							room={selectedRoom}
@@ -55,6 +65,8 @@ export default function Home() {
 					</div>
 				</div>
 			</div>
+
+			<Footer />
 		</div>
 	);
 }
