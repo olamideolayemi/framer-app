@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 import { AlertCircle, Eye, EyeOff, LogIn, Shield } from 'lucide-react';
+import Image from 'next/image';
 
 export default function LoginPage() {
 	const [formData, setFormData] = useState({ email: '', password: '' });
@@ -36,8 +37,14 @@ export default function LoginPage() {
 				<div className='bg-white rounded-3xl shadow-2xl overflow-hidden'>
 					{/* Header */}
 					<div className='bg-gradient-to-r from-[#3f9b85] to-[#457b6e] p-8 text-center'>
-						<div className='w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4'>
-							<Shield className='w-8 h-8 text-#457b6e' />
+						<div className='w-16 h-16 p-3 bg-white rounded-3xl flex items-center justify-center mx-auto mb-4'>
+							{/* <Shield className='w-8 h-8 text-#457b6e' /> */}
+							<Image
+								src='/logo.png'
+								alt='Frame Lane Logo'
+								width={80}
+								height={80}
+							/>
 						</div>
 						<h1 className='text-2xl font-bold text-white mb-2'>Admin Portal</h1>
 						<p className='text-indigo-100'>Frame Lane Management System</p>

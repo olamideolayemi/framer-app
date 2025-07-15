@@ -17,13 +17,13 @@ import LogoutButton from '@/components/LogoutButton';
 import {
 	Activity,
 	Bell,
+	Box,
 	Clock,
 	Filter,
 	Package,
 	Search,
 	Settings,
 	ShoppingCart,
-	Sparkles,
 	Truck,
 } from 'lucide-react';
 import StatCard from '@/components/StatCard';
@@ -73,6 +73,7 @@ export default function AdminDashboard() {
 		pending: orders.filter((o) => o.status === 'Pending').length,
 		inProgress: orders.filter((o) => o.status === 'In Progress').length,
 		shipped: orders.filter((o) => o.status === 'Shipped').length,
+		delivered: orders.filter((o) => o.status === 'Delivered').length,
 		// totalRevenue: orders.reduce((sum, order) => sum + order.value, 0),
 	};
 
@@ -156,91 +157,6 @@ export default function AdminDashboard() {
 	}
 
 	return (
-		// <div className='p-6'>
-		// 	<h1 className='text-2xl font-bold mb-4'>📦 Orders Dashboard</h1>
-		// 	<div className='flex items-center justify-between'>
-		// 		<ExportButton />
-		// 		<LogoutButton />
-		// 	</div>
-
-		// 	<div className='space-y-6'>
-		// 		{orders.length === 0 ? (
-		// 			<p>No orders yet.</p>
-		// 		) : (
-		// 			orders.map((order, i) => (
-		// 				<div
-		// 					key={i}
-		// 					className='bg-white text-black p-4 rounded shadow border'
-		// 				>
-		// 					<p>
-		// 						<strong>Name:</strong> {order.name}
-		// 					</p>
-		// 					<p>
-		// 						<strong>Email:</strong> {order.email}
-		// 					</p>
-		// 					<p>
-		// 						<strong>Address:</strong> {order.address}
-		// 					</p>
-		// 					<p>
-		// 						<strong>Frame:</strong> {order.frame}
-		// 					</p>
-		// 					<p>
-		// 						<strong>Size:</strong> {order.size}
-		// 					</p>
-		// 					<p>
-		// 						<strong>Room:</strong> {order.room}
-		// 					</p>
-		// 					<p>
-		// 						<strong>Status:</strong> {order.status}
-		// 					</p>
-		// 					<p>
-		// 						<strong>Date:</strong>{' '}
-		// 						{order.createdAt
-		// 							? new Date(
-		// 									typeof order.createdAt === 'object' &&
-		// 									'seconds' in order.createdAt
-		// 										? order.createdAt.seconds * 1000
-		// 										: order.createdAt,
-		// 							  ).toLocaleString()
-		// 							: 'N/A'}
-		// 					</p>
-		// 					<select
-		// 						value={order.status}
-		// 						onChange={async (e) => {
-		// 							const newStatus = e.target.value;
-		// 							const orderRef = doc(db, 'orders', order.id!);
-		// 							await updateDoc(orderRef, { status: newStatus });
-
-		// 							// Update local state (optional)
-		// 							setOrders((prev) =>
-		// 								prev.map((o, idx) =>
-		// 									idx === i ? { ...o, status: newStatus } : o,
-		// 								),
-		// 							);
-		// 						}}
-		// 						className='mt-1 border rounded p-1'
-		// 					>
-		// 						<option value='Pending'>Pending</option>
-		// 						<option value='In Progress'>In Progress</option>
-		// 						<option value='Shipped'>Shipped</option>
-		// 					</select>
-		// 					{order.image ? (
-		// 						<img
-		// 							src={order.image}
-		// 							alt='Uploaded'
-		// 							className='mt-4 w-48 border'
-		// 						/>
-		// 					) : (
-		// 						<p className='mt-4 text-sm text-gray-500 italic'>
-		// 							No image uploaded
-		// 						</p>
-		// 					)}
-		// 				</div>
-		// 			))
-		// 		)}
-		// 	</div>
-		// </div>
-
 		<div className='min-h-screen bg-gray-50'>
 			{/* Header */}
 			<div className='bg-white shadow-sm border-b'>
@@ -281,7 +197,7 @@ export default function AdminDashboard() {
 
 			<div className='max-w-7xl mx-auto px-6 py-8'>
 				{/* Stats Grid */}
-				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
+				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8'>
 					<StatCard
 						title='Total Orders'
 						value={stats.totalOrders}
@@ -307,6 +223,13 @@ export default function AdminDashboard() {
 						title='Shipped'
 						value={stats.shipped}
 						icon={Truck}
+						change='+8'
+						trend='up'
+					/>
+					<StatCard
+						title='Delivered'
+						value={stats.delivered}
+						icon={Box}
 						change='+8'
 						trend='up'
 					/>
