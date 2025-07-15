@@ -17,7 +17,7 @@ const FramePreview = ({ image, frame, room, size }: FramePreviewProps) => {
 
 	return (
 		<div className='bg-white rounded-3xl shadow-2xl overflow-hidden'>
-			<div className='bg-gradient-to-r from-[#3f9b85] to-[#457b6e] p-6'>
+			<div className='bg-gradient-to-r from-teal-600 to-teal-700/95 p-6'>
 				<h3 className='text-2xl font-bold text-white mb-2'>Live Preview</h3>
 				<p className='text-indigo-100'>
 					See how your photo will look on the wall
@@ -36,7 +36,7 @@ const FramePreview = ({ image, frame, room, size }: FramePreviewProps) => {
 					>
 						{isLoading ? (
 							<div className='absolute inset-0 flex items-center justify-center bg-white bg-opacity-80'>
-								<div className='animate-spin rounded-full h-12 w-12 border-b-2 border-[#457b6e]'></div>
+								<div className='animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600'></div>
 							</div>
 						) : image ? (
 							<div className='absolute inset-0 flex items-center justify-center'>

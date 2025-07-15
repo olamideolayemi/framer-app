@@ -175,7 +175,7 @@ export default function AdminDashboard() {
 							</div>
 							<div>
 								<h1 className='text-2xl font-bold text-gray-900'>
-									Frame Lane Admin
+									Frame.<span className='font-light font-century-italic text-teal-700'>lane</span>  Admin
 								</h1>
 								<p className='text-sm text-gray-500'>
 									Order Management Dashboard

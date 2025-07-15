@@ -33,7 +33,7 @@ const OrderCard = ({ order, onStatusChange }: OrderCardProps) => {
 			<div className='p-6'>
 				<div className='flex items-center justify-between mb-4'>
 					<div className='flex items-center space-x-3'>
-						<div className='w-10 h-10 bg-gradient-to-br from-[#457b6e]/90 to-[#457b6e] rounded-xl flex items-center justify-center'>
+						<div className='w-10 h-10 bg-gradient-to-br from-teal-700 to-teal-600/90 rounded-xl flex items-center justify-center'>
 							<Package className='w-5 h-5 text-white' />
 						</div>
 						<div>
