@@ -6,7 +6,7 @@ const SizeSelector = ({ selected, onSelect }: SizeSelectorProps) => {
 	return (
 		<div className='mb-8'>
 			<h3 className='text-xl font-bold text-gray-800 mb-4 flex items-center gap-2'>
-				<ArrowRight className='w-5 h-5 text-[#34c4a2]' />
+				<ArrowRight className='w-5 h-5 text-teal-600' />
 				Size & Pricing
 			</h3>
 
@@ -17,13 +17,13 @@ const SizeSelector = ({ selected, onSelect }: SizeSelectorProps) => {
 						onClick={() => onSelect(size)}
 						className={`w-full p-4 rounded-2xl border-2 transition-all duration-300 hover:scale-105 ${
 							selected === size
-								? 'border-[#457b6e] bg-indigo-50 shadow-lg'
-								: 'border-gray-200 hover:border-[#d5e7e3]'
+								? 'border-teal-600 bg-indigo-50 shadow-lg'
+								: 'border-gray-200 hover:border-teal-100'
 						}`}
 					>
 						<div className='flex items-center justify-between'>
 							<div className='flex items-center space-x-3'>
-								<div className='w-8 h-8 bg-gradient-to-br from-[#3f9b85] to-[#457b6e] rounded-lg flex items-center justify-center'>
+								<div className='w-8 h-8 bg-gradient-to-br from-teal-700 to-teal-600 rounded-lg flex items-center justify-center'>
 									<span className='text-white font-bold text-xs'>
 										{size.charAt(1)}
 									</span>
@@ -34,7 +34,7 @@ const SizeSelector = ({ selected, onSelect }: SizeSelectorProps) => {
 								</div>
 							</div>
 							<div className='text-right'>
-								<p className='text-2xl font-bold text-[#34c4a2]'>
+								<p className='text-2xl font-bold text-teal-600'>
 									₦{PRICING[size as keyof typeof PRICING]}
 								</p>
 								<p className='text-sm text-gray-500'>Free shipping</p>

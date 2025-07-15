@@ -30,13 +30,13 @@ export default function LoginPage() {
 	};
 
 	return (
-		<div className='min-h-screen bg-gradient-to-br from-[#3f9b85] via-[#33cfbb] to-[#1c4138] flex items-center justify-center p-4'>
+		<div className='min-h-screen bg-gradient-to-br from-teal-600 via-teal-400 to-teal-800 flex items-center justify-center p-4'>
 			<div className='absolute inset-0 bg-black bg-opacity-20'></div>
 
 			<div className='relative z-10 w-full max-w-md'>
 				<div className='bg-white rounded-3xl shadow-2xl overflow-hidden'>
 					{/* Header */}
-					<div className='bg-gradient-to-r from-[#3f9b85] to-[#457b6e] p-8 text-center'>
+					<div className='bg-gradient-to-r from-teal-600 to-teal-700 p-8 text-center'>
 						<div className='w-16 h-16 p-3 bg-white rounded-3xl flex items-center justify-center mx-auto mb-4'>
 							{/* <Shield className='w-8 h-8 text-#457b6e' /> */}
 							<Image
@@ -47,7 +47,7 @@ export default function LoginPage() {
 							/>
 						</div>
 						<h1 className='text-2xl font-bold text-white mb-2'>Admin Portal</h1>
-						<p className='text-indigo-100'>Frame Lane Management System</p>
+						<p className='text-indigo-100'>Frame.<span className='font-century-italic font-light'>lane</span> Management System</p>
 					</div>
 
 					{/* Form */}
@@ -69,7 +69,7 @@ export default function LoginPage() {
 								onChange={(e) =>
 									setFormData({ ...formData, email: e.target.value })
 								}
-								className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#34c4a2] focus:border-[#34c4a2] transition-colors'
+								className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-300 transition-colors'
 								placeholder='admin@frameapp.com'
 								required
 							/>
@@ -86,7 +86,7 @@ export default function LoginPage() {
 									onChange={(e) =>
 										setFormData({ ...formData, password: e.target.value })
 									}
-									className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#34c4a2] focus:border-[#34c4a2]transition-colors pr-12'
+									className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-300 transition-colors pr-12'
 									placeholder='Enter your password'
 									required
 								/>
@@ -108,7 +108,7 @@ export default function LoginPage() {
 							type='button'
 							onClick={handleLogin}
 							disabled={loading}
-							className='w-full bg-gradient-to-r from-[#3f9b85] to-[#457b6e] text-white py-3 rounded-xl font-medium hover:from-[#2f554c] hover:to-[#2f554c] transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none'
+							className='w-full bg-gradient-to-r from-teal-600 to-teal-700 text-white py-3 rounded-xl font-medium hover:from-teal-700 hover:to-teal-800 transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none'
 						>
 							{loading ? (
 								<div className='flex items-center justify-center space-x-2'>
