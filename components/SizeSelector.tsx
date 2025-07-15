@@ -1,8 +1,12 @@
 import { SIZE_OPTIONS } from '@/constants';
 import { PRICING } from '@/constants/pricing';
 import { ArrowRight } from 'lucide-react';
+import { useState } from 'react';
 
 const SizeSelector = ({ selected, onSelect }: SizeSelectorProps) => {
+	const [showAll, setShowAll] = useState(false);
+	const visibleSizes = showAll ? SIZE_OPTIONS : SIZE_OPTIONS.slice(0, 5);
+
 	return (
 		<div className='mb-8'>
 			<h3 className='text-xl font-bold text-gray-800 mb-4 flex items-center gap-2'>
@@ -10,8 +14,8 @@ const SizeSelector = ({ selected, onSelect }: SizeSelectorProps) => {
 				Size & Pricing
 			</h3>
 
-			<div className='space-y-3'>
-				{SIZE_OPTIONS.map((size) => (
+			<div className='space-y-3 transition-all duration-300'>
+				{visibleSizes.map((size) => (
 					<button
 						key={size}
 						onClick={() => onSelect(size)}
@@ -42,6 +46,15 @@ const SizeSelector = ({ selected, onSelect }: SizeSelectorProps) => {
 						</div>
 					</button>
 				))}
+
+				{SIZE_OPTIONS.length > 5 && (
+					<button
+						onClick={() => setShowAll(!showAll)}
+						className='text-sm text-teal-600 font-medium underline hover:text-teal-700 transition-all duration-200 mt-2'
+					>
+						{showAll ? 'Show less' : 'Show more'}
+					</button>
+				)}
 			</div>
 		</div>
 	);

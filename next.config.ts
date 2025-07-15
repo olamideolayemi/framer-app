@@ -8,7 +8,16 @@ const nextConfig: NextConfig = {
 		ignoreDuringBuilds: true,
 	},
 	images: {
-		domains: ['storage.googleapis.com', 'framer-app-6e2ea.firebasestorage.app'],
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'storage.googleapis.com',
+			},
+			{
+				protocol: 'https',
+				hostname: 'framer-app-6e2ea.firebasestorage.app',
+			},
+		],
 	},
 };
 

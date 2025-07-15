@@ -232,7 +232,7 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 								<div className='flex justify-between items-center'>
 									<span className='font-medium text-gray-800'>Total:</span>
 									<span className='text-2xl font-bold text-teal-600'>
-										${PRICING[size as keyof typeof PRICING]}
+										₦{PRICING[size as keyof typeof PRICING]}
 									</span>
 								</div>
 								<p className='text-xs text-gray-500 mt-1'>
