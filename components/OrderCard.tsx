@@ -121,8 +121,9 @@ const OrderCard = ({ order, onStatusChange }: OrderCardProps) => {
 									<Image
 										src={`${order?.image}`}
 										alt='Order preview'
-										width={24}
-										className='w-24 h-24 object-cover rounded-lg border border-gray-200'
+										width={96}
+										height={96}
+										className='object-cover rounded-lg border border-gray-200'
 									/>
 								) : (
 									<div className='w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center'>
