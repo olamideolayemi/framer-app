@@ -109,7 +109,7 @@ const ImageUploader = ({ onUpload, uploadedImage }: ImageUploaderProps) => {
 						</div>
 						<button
 							onClick={() => fileInputRef.current?.click()}
-							className='px-6 py-3 bg-gradient-to-r from-teal-700 to-teal-600 text-white rounded-xl font-medium hover:ring-teal-800 hover:border-teal-700 transform hover:scale-105 transition-all duration-200 shadow-lg'
+							className='px-6 py-3 bg-teal-600 bg-gradient-to-r from-teal-700 to-teal-600 text-white rounded-xl font-medium hover:ring-teal-800 hover:border-teal-700 transform hover:scale-105 transition-all duration-200 shadow-lg'
 						>
 							Choose File
 						</button>

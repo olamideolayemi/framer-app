@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* @tailwind base; */
+/* @tailwind components; */
+@tailwind utilities;
+
 @font-face {
   font-family: 'Century Schoolbook';
   src: url('/public/fonts/CSb-Regular.ttf') format('truetype');
