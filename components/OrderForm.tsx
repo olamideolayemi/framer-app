@@ -138,7 +138,7 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 
 	return (
 		<div className='bg-white rounded-3xl shadow-2xl overflow-hidden'>
-			<div className='bg-gradient-to-r from-[#3f9b85] to-[#457b6e] p-6'>
+			<div className='bg-gradient-to-r from-teal-600 to-teal-700 p-6'>
 				<h3 className='text-2xl font-bold text-white mb-2 flex items-center gap-2'>
 					<ShoppingCart className='w-6 h-6' />
 					Complete Your Order
@@ -161,7 +161,7 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 							type='text'
 							value={formData.name}
 							onChange={(e) => handleInputChange('name', e.target.value)}
-							className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#457b6e] focus:border-[#457b6e] transition-colors'
+							className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-700 focus:border-teal-500 transition-colors'
 							placeholder='Enter your full name'
 							required
 						/>
@@ -176,7 +176,7 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 							name='phone'
 							value={formData.phone}
 							onChange={(e) => handleInputChange('phone', e.target.value)}
-							className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#457b6e] focus:border-[#457b6e] transition-colors'
+							className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-700 focus:border-teal-500 transition-colors'
 							placeholder='Enter your phone number'
 							required
 						/>
@@ -191,7 +191,7 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 							name='email'
 							value={formData.email}
 							onChange={(e) => handleInputChange('email', e.target.value)}
-							className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#457b6e] focus:border-[#457b6e] transition-colors'
+							className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-700 focus:border-teal-500 transition-colors'
 							placeholder='Enter your email address'
 							required
 						/>
@@ -205,7 +205,7 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 							value={formData.address}
 							onChange={(e) => handleInputChange('address', e.target.value)}
 							rows={3}
-							className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#457b6e] focus:border-[#457b6e] transition-colors resize-none'
+							className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-700 focus:border-teal-500 transition-colors resize-none'
 							placeholder='Enter your complete delivery address'
 							required
 						/>
@@ -231,8 +231,8 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 							<div className='border-t pt-2 mt-2'>
 								<div className='flex justify-between items-center'>
 									<span className='font-medium text-gray-800'>Total:</span>
-									<span className='text-2xl font-bold text-[#457b6e]'>
-										${PRICING[size as keyof typeof PRICING]}
+									<span className='text-2xl font-bold text-teal-600'>
+										₦{PRICING[size as keyof typeof PRICING]}
 									</span>
 								</div>
 								<p className='text-xs text-gray-500 mt-1'>
@@ -246,7 +246,7 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 				<button
 					type='submit'
 					disabled={loading}
-					className='w-full mt-6 bg-gradient-to-r from-[#3f9b85] to-[#457b6e] text-white py-4 rounded-2xl font-bold text-lg hover:from-[#40ac93] hover:to-[#3fa38c] transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none'
+					className='w-full mt-6 bg-gradient-to-r from-teal-600 to-teal-700 text-white py-4 rounded-2xl font-bold text-lg hover:from-teal-700/90 hover:to-teal-800/70 transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none'
 				>
 					{loading ? (
 						<div className='flex items-center justify-center space-x-2'>
