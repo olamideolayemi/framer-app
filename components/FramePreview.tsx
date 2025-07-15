@@ -7,6 +7,8 @@ const FramePreview = ({ image, frame, room, size }: FramePreviewProps) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const backgroundImage = `/rooms/${room || 'living-room.jpg'}`;
+	const frameStyle = FRAME_STYLES[frame];
+	const frameSizeClass = SIZE_DIMENSIONS[size] || 'w-[140px] h-[200px]';
 
 	useEffect(() => {
 		if (image) {
@@ -17,7 +19,7 @@ const FramePreview = ({ image, frame, room, size }: FramePreviewProps) => {
 
 	return (
 		<div className='bg-white rounded-3xl shadow-2xl overflow-hidden'>
-			<div className='bg-gradient-to-r from-teal-600 to-teal-700/95 p-6'>
+			<div className='bg-gradient-to-r from-teal-600 to-teal-700 p-6'>
 				<h3 className='text-2xl font-bold text-white mb-2'>Live Preview</h3>
 				<p className='text-indigo-100'>
 					See how your photo will look on the wall
@@ -40,23 +42,44 @@ const FramePreview = ({ image, frame, room, size }: FramePreviewProps) => {
 							</div>
 						) : image ? (
 							<div className='absolute inset-0 flex items-center justify-center'>
-								<div
-									className={`bg-white flex items-center justify-center shadow-2xl ${
-										FRAME_STYLES[frame]
-									} ${SIZE_DIMENSIONS[size] || 'w-[140px] h-[200px]'}`}
-									style={{
-										transform:
-											'perspective(1000px) rotateY(-5deg) rotateX(5deg)',
-									}}
-								>
-									<Image
-										src={`${image}`}
-										alt='Framed Upload'
-										className='object-cover w-full h-full'
-										width={30}
-										height={30}
-									/>
-								</div>
+								{FRAME_STYLES[frame] === 'color' ? (
+									<div
+										className={`bg-white flex items-center justify-center shadow-2xl border-8 border-black ${SIZE_DIMENSIONS[size]}`}
+										style={{
+											transform:
+												'perspective(1000px) rotateY(-5deg) rotateX(5deg)',
+										}}
+									>
+										<Image
+											src={`${image}`}
+											alt='Framed Upload'
+											className='object-cover w-full h-full'
+											width={300}
+											height={300}
+										/>
+									</div>
+								) : (
+									<div
+										className={`p-3 bg-white shadow-2xl ${SIZE_DIMENSIONS[size]}`}
+										style={{
+											backgroundImage: `url(${FRAME_STYLES[frame]})`,
+											backgroundSize: 'cover',
+											backgroundPosition: 'center',
+											transform:
+												'perspective(1000px) rotateY(-5deg) rotateX(5deg)',
+										}}
+									>
+										<div className='w-full h-full overflow-hidden'>
+											<Image
+												src={`${image}`}
+												alt='Framed Upload'
+												className='object-cover w-full h-full rounded-none'
+												width={300}
+												height={300}
+											/>
+										</div>
+									</div>
+								)}
 							</div>
 						) : (
 							<div className='absolute inset-0 flex items-center justify-center'>

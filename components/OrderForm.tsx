@@ -15,6 +15,7 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 		phone: '',
 		email: '',
 		address: '',
+		message: '',
 	});
 	const [submitted, setSubmitted] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -90,9 +91,9 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 	if (submitted) {
 		return (
 			<div className='bg-white rounded-3xl shadow-2xl overflow-hidden'>
-				<div className='bg-gradient-to-r from-green-500 to-emerald-600 p-6 text-center'>
+				<div className='bg-gradient-to-r from-teal-500 to-teal-700 p-6 text-center'>
 					<div className='w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4'>
-						<Check className='w-10 h-10 text-green-600' />
+						<Check className='w-10 h-10 text-teal-600' />
 					</div>
 					<h3 className='text-2xl font-bold text-white mb-2'>
 						Order Confirmed!
@@ -130,6 +131,13 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 						<p className='text-sm text-gray-600 mb-2'>We'll send updates to:</p>
 						<p className='font-medium text-gray-800'>{formData.email}</p>
 						<p className='font-medium text-gray-800'>{formData.phone}</p>
+					</div>
+					<div className='mt-6 p-4 bg-gray-50 rounded-2xl'>
+						<p className='text-sm text-gray-600 mb-2'>
+							For further enquires or if you would like to speak to us
+						</p>
+						<p className='font-medium text-gray-800'>+2349031585326</p>
+						<p className='font-medium text-gray-800'>theframelane@gmail.com</p>
 					</div>
 				</div>
 			</div>
@@ -211,6 +219,19 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 						/>
 					</div>
 
+					<div>
+						<label className='block text-sm font-medium text-gray-700 mb-2'>
+							Extra Notes
+						</label>
+						<textarea
+							value={formData.message || ''}
+							onChange={(e) => handleInputChange('message', e.target.value)}
+							rows={3}
+							className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-700 focus:border-teal-500 transition-colors resize-none'
+							placeholder='Any special instructions or notes for us?'
+						/>
+					</div>
+
 					<div className='bg-gray-50 p-4 rounded-2xl'>
 						<h4 className='font-medium text-gray-800 mb-3'>Order Summary</h4>
 						<div className='space-y-2 text-sm'>
@@ -246,7 +267,7 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 				<button
 					type='submit'
 					disabled={loading}
-					className='w-full mt-6 bg-gradient-to-r from-teal-600 to-teal-700 text-white py-4 rounded-2xl font-bold text-lg hover:from-teal-700/90 hover:to-teal-800/70 transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none'
+					className='w-full mt-6 bg-gradient-to-r from-teal-600 to-teal-700 text-white py-4 rounded-2xl font-bold text-lg hover:from-teal-700 hover:to-teal-800 transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none'
 				>
 					{loading ? (
 						<div className='flex items-center justify-center space-x-2'>
@@ -268,7 +289,7 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 					</div>
 					<div className='flex items-center space-x-1'>
 						<Award className='w-4 h-4' />
-						<span>Money Back Guarantee</span>
+						<span>Money Back Guarantee - Terms & Conditions Apply</span>
 					</div>
 				</div>
 			</form>

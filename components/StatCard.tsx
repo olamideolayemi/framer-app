@@ -25,7 +25,7 @@ const StatCard = ({
 					</p>
 				)}
 			</div>
-			<div className='w-12 h-12 bg-gradient-to-br from-teal-700 to-teal-600/90 rounded-xl flex items-center justify-center'>
+			<div className='w-12 h-12 bg-gradient-to-br from-teal-700 to-teal-600 rounded-xl flex items-center justify-center'>
 				<Icon className='w-6 h-6 text-white' />
 			</div>
 		</div>

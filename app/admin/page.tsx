@@ -252,7 +252,7 @@ export default function AdminDashboard() {
 									placeholder='Search orders...'
 									value={searchTerm}
 									onChange={(e) => setSearchTerm(e.target.value)}
-									className='pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#457b6e] focus:border-[#457b6e]'
+									className='pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-600'
 								/>
 							</div>
 							<div className='relative'>
@@ -260,7 +260,7 @@ export default function AdminDashboard() {
 								<select
 									value={statusFilter}
 									onChange={(e) => setStatusFilter(e.target.value)}
-									className='pl-10 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#457b6e] focus:border-[#457b6e]'
+									className='pl-10 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-700 focus:border-teal-600'
 								>
 									<option value='all'>All Status</option>
 									<option value='Pending'>Pending</option>
@@ -319,7 +319,7 @@ export default function AdminDashboard() {
 							<button className='px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors'>
 								Previous
 							</button>
-							<span className='px-4 py-2 bg-[#2f554c] text-white rounded-lg'>
+							<span className='px-4 py-2 bg-teal-700 text-white rounded-lg'>
 								1
 							</span>
 							<button className='px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors'>
