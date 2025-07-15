@@ -25,7 +25,12 @@ module.exports = {
 				'teal-custom-1': '#3f9b85',
 				'teal-custom-2': '#34c4a2',
 				'teal-custom-3': '#2f554c',
+				'teal-custom-4': '#40ac93',
+				'teal-custom-5': '#3fa38c',
 			},
+		},
+		fontFamily: {
+			century: ['Century Schoolbook', 'serif'],
 		},
 	},
 	variants: {

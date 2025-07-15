@@ -18,7 +18,9 @@ const Header = () => {
 						</div>
 					</div>
 					<div>
-						<h1 className='text-2xl font-bold text-gray-900'>Frame Lane</h1>
+						<h1 className='text-2xl font-bold text-gray-900'>
+							Frame.<span className='font-century-italic font-light text-teal-600 '>lane</span>
+						</h1>
 						<p className='text-sm text-gray-500'>Premium custom framing</p>
 					</div>
 				</div>

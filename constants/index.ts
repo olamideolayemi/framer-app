@@ -21,8 +21,8 @@ export const SIZE_DIMENSIONS: Record<string, string> = {
 
 export const FRAME_STYLES: Record<string, string> = {
 	black: 'border-8 border-black',
-	wood: 'border-8 border-yellow-800',
-	gold: 'border-8 border-yellow-500',
+	frame_4: '/frames/frame_4.png',
+  frame_5: '/frames/frame_5.png',
 };
 
 export const ROOM_OPTIONS = [
@@ -47,7 +47,48 @@ export const ROOM_OPTIONS = [
 // 	{ name: 'Kitchen', value: 'kitchen.jpg', image: '/rooms/kitchen.jpg' },
 // ];
 
-export const FRAME_OPTIONS = ['black', 'wood', 'gold'];
+export const FRAME_OPTIONS = [
+	{
+		label: 'black',
+		colorClass: 'bg-black',
+		// description: 'Elegant gold carved pattern'
+	},
+	{
+		label: 'frame 4',
+		image: '/frames/frame_4.png',
+		// description: 'Elegant gold carved pattern'
+	},
+	{
+		label: 'frame 5',
+		image: '/frames/frame_5.png',
+		// description: 'Elegant gold carved pattern'
+	},
+	{
+		label: 'frame 1',
+		image: '/frames/frame_1.png',
+		// description: 'Elegant gold carved pattern'
+	},
+	{
+		label: 'frame 2',
+		image: '/frames/frame_2.png',
+		// description: 'Elegant gold carved pattern'
+	},
+	{
+		label: 'frame 3',
+		image: '/frames/frame_3.png',
+		// description: 'Elegant frame_3', carved pattern'
+	},
+	{
+		label: 'frame 6',
+		image: '/frames/frame_6.png',
+		// description: 'Elegant frame_3', carved pattern'
+	},
+	{
+		label: 'frame 7',
+		image: '/frames/frame_7.png',
+		// description: 'Elegant frame_3', carved pattern'
+	},
+];
 
 export const SIZE_OPTIONS = [
 	'5x7 in',

@@ -16,7 +16,9 @@ const Footer = () => {
 							height={120}
 						/>
 					</div>
-					<h3 className='text-2xl font-bold'>Frame Lane</h3>
+					<h3 className='text-2xl font-bold'>
+						Frame.<span className='font-century-italic font-light text-teal-600'>lane</span>
+					</h3>
 				</div>
 				<p className='text-gray-400 mb-8 max-w-2xl mx-auto'>
 					Bringing your memories to life with premium custom framing. Every
@@ -25,19 +27,19 @@ const Footer = () => {
 				</p>
 				<div className='grid grid-cols-1 md:grid-cols-4 gap-8 mb-8'>
 					<div className='text-center'>
-						<div className='text-3xl font-bold text-[#34c4a2] mb-2'>50k+</div>
+						<div className='text-3xl font-bold text-teal-600 mb-2'>50k+</div>
 						<p className='text-gray-400'>Happy Customers</p>
 					</div>
 					<div className='text-center'>
-						<div className='text-3xl font-bold text-[#34c4a2] mb-2'>4.9★</div>
+						<div className='text-3xl font-bold text-teal-600 mb-2'>4.9★</div>
 						<p className='text-gray-400'>Average Rating</p>
 					</div>
 					<div className='text-center'>
-						<div className='text-3xl font-bold text-[#34c4a2] mb-2'>100k+</div>
+						<div className='text-3xl font-bold text-teal-600 mb-2'>100k+</div>
 						<p className='text-gray-400'>Photos Framed</p>
 					</div>
 					<div className='text-center'>
-						<div className='text-3xl font-bold text-[#34c4a2] mb-2'>24/7</div>
+						<div className='text-3xl font-bold text-teal-600 mb-2'>24/7</div>
 						<p className='text-gray-400'>Customer Support</p>
 					</div>
 				</div>

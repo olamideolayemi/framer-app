@@ -6,7 +6,7 @@ const RoomSelector = ({ selected, onSelect }: RoomSelectorProps) => {
 	return (
 		<div className='mb-8'>
 			<h3 className='text-xl font-bold text-gray-800 mb-4 flex items-center gap-2'>
-				<Eye className='w-5 h-5 text-[#457b6e]' />
+				<Eye className='w-5 h-5 text-teal-600' />
 				Room Preview
 			</h3>
 
@@ -17,8 +17,8 @@ const RoomSelector = ({ selected, onSelect }: RoomSelectorProps) => {
 						onClick={() => onSelect(room.value)}
 						className={`relative p-4 rounded-2xl border-2 transition-all duration-300 hover:scale-105 ${
 							selected === room.value
-								? 'border-[#2f554c] bg-indigo-50 shadow-lg'
-								: 'border-gray-200 hover:border-[#457b6e]/80'
+								? 'border-teal-600 bg-indigo-50 shadow-lg'
+								: 'border-gray-200 hover:border-teal-400'
 						}`}
 					>
 						<div className='flex flex-col items-center space-y-2'>
@@ -34,7 +34,7 @@ const RoomSelector = ({ selected, onSelect }: RoomSelectorProps) => {
 							<span className='text-sm font-medium'>{room.name}</span>
 						</div>
 						{selected === room.value && (
-							<div className='absolute -top-2 -right-2 w-6 h-6 bg-[#457b6e] rounded-full flex items-center justify-center'>
+							<div className='absolute -top-2 -right-2 w-6 h-6 bg-teal-600 rounded-full flex items-center justify-center'>
 								<Check className='w-4 h-4 text-white' />
 							</div>
 						)}
