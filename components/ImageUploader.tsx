@@ -62,7 +62,7 @@ const ImageUploader = ({ onUpload, uploadedImage }: ImageUploaderProps) => {
 			<div
 				className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 ${
 					dragActive
-						? 'border-teal-600 bg-indigo-50 scale-105'
+						? 'border-teal-600 bg-teal-50 scale-105'
 						: uploadedImage
 						? 'border-green-400 bg-green-50'
 						: 'border-gray-300 hover:border-teal-300 hover:bg-teal-50'
@@ -74,8 +74,8 @@ const ImageUploader = ({ onUpload, uploadedImage }: ImageUploaderProps) => {
 			>
 				{uploading ? (
 					<div className='flex flex-col items-center space-y-4'>
-						<div className='animate-spin rounded-full h-12 w-12 border-b-2 border-teal-700/90'></div>
-						<p className='text-indigo-600 font-medium'>
+						<div className='animate-spin rounded-full h-12 w-12 border-b-2 border-teal-700'></div>
+						<p className='text-teal-600 font-medium'>
 							Processing your image...
 						</p>
 					</div>
@@ -89,14 +89,14 @@ const ImageUploader = ({ onUpload, uploadedImage }: ImageUploaderProps) => {
 						</p>
 						<button
 							onClick={() => fileInputRef.current?.click()}
-							className='text-indigo-600 hover:[#2f554c] font-medium underline'
+							className='text-teal-600 hover:text-teal-700 font-medium underline'
 						>
 							Upload different image
 						</button>
 					</div>
 				) : (
 					<div className='flex flex-col items-center space-y-4'>
-						<div className='w-16 h-16 bg-gradient-to-br from-teal-700/95 to-teal-600 rounded-full flex items-center justify-center'>
+						<div className='w-16 h-16 bg-gradient-to-br from-teal-700 to-teal-600 rounded-full flex items-center justify-center'>
 							<Camera className='w-8 h-8 text-white' />
 						</div>
 						<div>
@@ -109,7 +109,7 @@ const ImageUploader = ({ onUpload, uploadedImage }: ImageUploaderProps) => {
 						</div>
 						<button
 							onClick={() => fileInputRef.current?.click()}
-							className='px-6 py-3 bg-gradient-to-r from-teal-700 to-teal-600 text-white rounded-xl font-medium hover:ring-teal-700/90 hover:border-teal-600/90 transform hover:scale-105 transition-all duration-200 shadow-lg'
+							className='px-6 py-3 bg-gradient-to-r from-teal-700 to-teal-600 text-white rounded-xl font-medium hover:ring-teal-800 hover:border-teal-700 transform hover:scale-105 transition-all duration-200 shadow-lg'
 						>
 							Choose File
 						</button>

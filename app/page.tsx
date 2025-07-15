@@ -18,7 +18,7 @@ export default function Home() {
 	const [selectedSize, setSelectedSize] = useState('A4 (8x12 in)');
 
 	return (
-		<div className='min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50'>
+		<div className='min-h-screen bg-gradient-to-br from-teal-50 via-white to-green-50'>
 			{/* Header */}
 			<Header />
 

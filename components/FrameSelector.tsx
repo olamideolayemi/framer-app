@@ -26,7 +26,7 @@ const FrameSelector = ({ selected, onSelect }: FrameSelectorProps) => {
 						className={`relative p-4 rounded-2xl border-2 transition-all duration-300 hover:scale-105 ${
 							selected === frame.label
 								? 'border-teal-600 bg-indigo-50 shadow-lg'
-								: 'border-gray-200 hover:border-indigo-300'
+								: 'border-gray-200 hover:border-teal-200'
 						}`}
 					>
 						<div className='flex flex-col items-center space-y-2'>

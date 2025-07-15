@@ -33,7 +33,7 @@ const OrderCard = ({ order, onStatusChange }: OrderCardProps) => {
 			<div className='p-6'>
 				<div className='flex items-center justify-between mb-4'>
 					<div className='flex items-center space-x-3'>
-						<div className='w-10 h-10 bg-gradient-to-br from-teal-700 to-teal-600/90 rounded-xl flex items-center justify-center'>
+						<div className='w-10 h-10 bg-gradient-to-br from-teal-700 to-teal-600 rounded-xl flex items-center justify-center'>
 							<Package className='w-5 h-5 text-white' />
 						</div>
 						<div>
@@ -89,7 +89,7 @@ const OrderCard = ({ order, onStatusChange }: OrderCardProps) => {
 								onStatusChange(order.id, e.target.value);
 							}
 						}}
-						className='px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#2f554c] focus:border-[#457b6e]'
+						className='px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-700 focus:border-teal-600'
 					>
 						<option value='Pending'>Pending</option>
 						<option value='In Progress'>In Progress</option>
