@@ -19,7 +19,7 @@ const FramePreview = ({ image, frame, room, size }: FramePreviewProps) => {
 
 	return (
 		<div className='bg-white rounded-3xl shadow-2xl overflow-hidden'>
-			<div className='bg-gradient-to-r from-teal-600 to-teal-700 p-6'>
+			<div className='bg-teal-600 bg-gradient-to-r from-teal-600 to-teal-700 p-6'>
 				<h3 className='text-2xl font-bold text-white mb-2'>Live Preview</h3>
 				<p className='text-indigo-100'>
 					See how your photo will look on the wall
