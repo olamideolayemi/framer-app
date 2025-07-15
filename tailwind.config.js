@@ -17,7 +17,6 @@ module.exports = {
 		'text-[#457b6e]',
 		'border-[#457b6e]',
 		'bg-[#2f554c]',
-		'teal-custom',
 	],
 	theme: {
 		extend: {
