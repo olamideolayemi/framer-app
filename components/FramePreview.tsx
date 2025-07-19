@@ -1,4 +1,5 @@
 import { FRAME_STYLES, SIZE_DIMENSIONS } from '@/constants';
+import { FramePreviewProps } from '@/types';
 import { Camera, Shield, Star, Truck } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';

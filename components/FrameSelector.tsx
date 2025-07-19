@@ -1,4 +1,5 @@
 import { FRAME_OPTIONS } from '@/constants';
+import { FrameSelectorProps } from '@/types';
 import { Check, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 

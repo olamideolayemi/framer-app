@@ -1,3 +1,4 @@
+import { ImageUploaderProps } from '@/types';
 import { Camera, Check, Upload } from 'lucide-react';
 import { useRef, useState, DragEvent, ChangeEvent } from 'react';
 

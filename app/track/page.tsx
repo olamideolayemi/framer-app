@@ -1,74 +1,94 @@
 'use client';
 
 import { useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
-export default function TrackOrder() {
-	const [query, setQuery] = useState('');
-	const [results, setResults] = useState<any[]>([]);
+export default function TrackOrderPage() {
+	const [orderId, setOrderId] = useState('');
+	const [orderData, setOrderData] = useState<any>(null);
 	const [loading, setLoading] = useState(false);
+	const [notFound, setNotFound] = useState(false);
 
-	const handleSearch = async () => {
+	const handleTrack = async () => {
+		if (!orderId.trim()) return;
 		setLoading(true);
-		const snapshot = await getDocs(collection(db, 'orders'));
-		const allOrders = snapshot.docs.map((doc) => doc.data());
+		setNotFound(false);
+		setOrderData(null);
 
-		const filtered = allOrders.filter(
-			(order) =>
-				order.email.includes(query) ||
-				order.name.toLowerCase().includes(query.toLowerCase()),
-		);
+		try {
+			const docRef = doc(db, 'orders', orderId.trim());
+			const docSnap = await getDoc(docRef);
 
-		setResults(filtered);
-		setLoading(false);
+			if (docSnap.exists()) {
+				setOrderData(docSnap.data());
+			} else {
+				setNotFound(true);
+			}
+		} catch (error) {
+			console.error('Error fetching order:', error);
+			setNotFound(true);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	return (
-		<div className='p-6 max-w-xl mx-auto'>
-			<h1 className='text-xl font-bold mb-4'>📦 Track Your Order</h1>
+		<div className='max-w-md mx-auto p-6'>
+			<h2 className='text-2xl font-bold mb-4'>Track Your Order</h2>
+
 			<input
 				type='text'
-				placeholder='Enter your name or phone number'
-				value={query}
-				onChange={(e) => setQuery(e.target.value)}
-				className='w-full border p-2 rounded mb-2'
+				value={orderId}
+				onChange={(e) => setOrderId(e.target.value)}
+				placeholder='Enter your order ID'
+				className='w-full border px-3 py-2 mb-3 rounded'
 			/>
 			<button
-				onClick={handleSearch}
-				className='bg-black text-white px-4 py-2 rounded hover:bg-gray-800'
+				onClick={handleTrack}
+				className='w-full bg-black text-white py-2 rounded'
+				disabled={loading}
 			>
-				Search
+				{loading ? 'Checking...' : 'Track Order'}
 			</button>
 
-			{loading && <p className='mt-4'>Searching...</p>}
-
-			{results.length > 0 && (
-				<div className='mt-4 space-y-4'>
-					{results.map((order, i) => (
-						<div
-							key={i}
-							className='border p-4 rounded shadow'
-						>
-							<p>
-								<strong>Name:</strong> {order.name}
-							</p>
-							<p>
-								<strong>Phone:</strong> {order.phone}
-							</p>
-							<p>
-								<strong>Status:</strong> {order.status}
-							</p>
-							<p className='text-xs text-gray-500'>
-								Placed on: {new Date(order.createdAt).toLocaleDateString()}
-							</p>
-						</div>
-					))}
-				</div>
+			{notFound && (
+				<p className='mt-4 text-red-600 text-sm'>
+					Order not found. Check your ID and try again.
+				</p>
 			)}
 
-			{!loading && results.length === 0 && query && (
-				<p className='mt-4 text-gray-500'>No order found.</p>
+			{orderData && (
+				<div className='mt-6 border p-4 rounded bg-gray-50'>
+					<p>
+						<strong>Name:</strong> {orderData.full_name}
+					</p>
+					<p>
+						<strong>Frame Size:</strong> {orderData.size}
+					</p>
+					<p>
+						<strong>Frame Type:</strong> {orderData.frame}
+					</p>
+					<p>
+						<strong>Status:</strong> {orderData.status ?? 'Processing'}
+					</p>
+					{orderData.createdAt && (
+						<p>
+							<strong>Order Date:</strong>{' '}
+							{new Date(
+								typeof orderData.createdAt === 'object' &&
+								orderData.createdAt.seconds
+									? orderData.createdAt.seconds * 1000
+									: orderData.createdAt,
+							).toLocaleString()}
+						</p>
+					)}
+				</div>
+			)}
+			{!orderData && !notFound && !loading && (
+				<p className='mt-4 text-gray-500'>
+					Enter your order ID to see details.
+				</p>
 			)}
 		</div>
 	);

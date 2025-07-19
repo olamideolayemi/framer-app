@@ -71,3 +71,8 @@ declare type OrderStatus =
 	| 'Shipped'
 	| 'Delivered'
 	| 'Cancelled';
+
+export interface UserInfo {
+	uid: string;
+	email: string | null;
+}

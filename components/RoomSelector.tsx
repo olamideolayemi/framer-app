@@ -1,4 +1,5 @@
 import { ROOM_OPTIONS } from '@/constants';
+import { RoomSelectorProps } from '@/types';
 import { Check, Eye } from 'lucide-react';
 import Image from 'next/image';
 

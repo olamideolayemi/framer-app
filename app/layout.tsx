@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../styles/globals.css';
+import { AuthProvider } from '@/lib/authContext';
 
 require('dotenv').config();
 
@@ -29,7 +30,7 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased font-century`}
 			>
-				{children}
+				<AuthProvider>{children}</AuthProvider>
 			</body>
 		</html>
 	);

@@ -1,3 +1,4 @@
+import { OrderCardProps, OrderStatus } from '@/types';
 import {
 	Activity,
 	Calendar,

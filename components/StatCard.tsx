@@ -1,3 +1,4 @@
+import { StatCardProps } from '@/types';
 import { TrendingUp } from 'lucide-react';
 
 const StatCard = ({
