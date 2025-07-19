@@ -12,6 +12,7 @@ import {
 	serverTimestamp,
 	setDoc,
 	updateDoc,
+	deleteDoc,
 } from 'firebase/firestore';
 import ExportButton from '@/components/ExportButton';
 import LogoutButton from '@/components/LogoutButton';
@@ -30,9 +31,12 @@ import {
 import StatCard from '@/components/StatCard';
 import OrderCard from '@/components/OrderCard';
 import Image from 'next/image';
+import Loading from '../loading';
+import { toast } from 'sonner';
+import DeleteModal from '@/components/modals/DeleteModal';
 
 type Order = {
-	id?: string;
+	id: string;
 	name: string;
 	email: string;
 	contact: string;
@@ -54,6 +58,8 @@ export default function AdminDashboard() {
 	const [loading, setLoading] = useState(true);
 	const [denied, setDenied] = useState(false);
 	// const [adminEmail, setAdminEmail] = useState<string | null>(null);
+	const [deleteTarget, setDeleteTarget] = useState<Order | null>(null);
+	const [deleting, setDeleting] = useState(false);
 	const router = useRouter();
 
 	const filteredOrders = orders.filter((order) => {
@@ -96,6 +102,23 @@ export default function AdminDashboard() {
 			);
 		} catch (error) {
 			console.error('Failed to update order status:', error);
+		}
+	};
+
+	const handleDelete = async () => {
+		if (!deleteTarget?.id) return;
+
+		setDeleting(true);
+		try {
+			await deleteDoc(doc(db, 'orders', deleteTarget.id));
+			setOrders((prev) => prev.filter((order) => order.id !== deleteTarget.id));
+			toast.success(`Order ${deleteTarget.id} deleted`);
+			setDeleteTarget(null);
+		} catch (err) {
+			console.error('Delete failed:', err);
+			toast.error('Failed to delete order. Please try again.');
+		} finally {
+			setDeleting(false);
 		}
 	};
 
@@ -164,7 +187,7 @@ export default function AdminDashboard() {
 	}
 
 	if (loading) {
-		return <p className='p-6 text-gray-600'>Loading admin dashboard...</p>;
+		return <Loading />;
 	}
 
 	return (
@@ -322,6 +345,7 @@ export default function AdminDashboard() {
 									isAdmin
 									order={order as any}
 									onStatusChange={handleStatusChange}
+									onDelete={() => setDeleteTarget(order)}
 								/>
 							))}
 						</div>
@@ -344,6 +368,12 @@ export default function AdminDashboard() {
 					</div>
 				)}
 			</div>
+			<DeleteModal
+				deleteTarget={deleteTarget}
+				deleting={deleting}
+				onCancel={() => setDeleteTarget(null)}
+				onConfirm={handleDelete}
+			/>
 		</div>
 	);
 }

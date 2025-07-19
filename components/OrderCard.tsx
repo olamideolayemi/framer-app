@@ -12,11 +12,17 @@ import {
 	Phone,
 	Truck,
 	XCircle,
+	Trash,
 } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-const OrderCard = ({ order, onStatusChange, isAdmin }: OrderCardProps) => {
+const OrderCard = ({
+	order,
+	onStatusChange,
+	isAdmin,
+	onDelete,
+}: OrderCardProps) => {
 	const [showDetails, setShowDetails] = useState(false);
 
 	const statusConfig = {
@@ -57,6 +63,15 @@ const OrderCard = ({ order, onStatusChange, isAdmin }: OrderCardProps) => {
 						>
 							<MoreHorizontal className='w-4 h-4 text-gray-500' />
 						</button>
+						{isAdmin && onDelete && (
+							<button
+								onClick={() => onDelete(order.id!)}
+								className='p-1 rounded hover:bg-red-50 group'
+								title='Delete Order'
+							>
+								<Trash className='w-5 h-5 text-red-500 group-hover:text-red-700' />
+							</button>
+						)}
 					</div>
 				</div>
 

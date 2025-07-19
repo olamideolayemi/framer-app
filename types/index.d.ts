@@ -56,6 +56,7 @@ declare type OrderCardProps = {
 	order: Order;
 	onStatusChange: (id: string, status: string) => void;
 	isAdmin?: boolean;
+	 onDelete?: (orderId: string) => void;
 };
 
 declare type StatCardProps = {
