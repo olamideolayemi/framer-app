@@ -30,7 +30,7 @@ const FramePreview = ({ image, frame, room, size }: FramePreviewProps) => {
 			<div className='p-6'>
 				<div className='relative'>
 					<div
-						className='w-full aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl shadow-inner relative overflow-hidden'
+						className='w-full aspect-square bg-gray-100 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl shadow-inner relative overflow-hidden'
 						style={{
 							backgroundImage: `url(${backgroundImage})`,
 							backgroundSize: 'cover',

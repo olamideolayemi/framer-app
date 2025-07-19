@@ -15,23 +15,19 @@ import {
 	deleteDoc,
 } from 'firebase/firestore';
 import ExportButton from '@/components/ExportButton';
-import LogoutButton from '@/components/LogoutButton';
 import {
 	Activity,
-	Bell,
 	Box,
 	Clock,
 	Filter,
 	Package,
 	Search,
-	Settings,
 	ShoppingCart,
 	Truck,
 } from 'lucide-react';
 import StatCard from '@/components/StatCard';
 import OrderCard from '@/components/OrderCard';
-import Image from 'next/image';
-import Loading from '../loading';
+import Loading from '../../loading';
 import { toast } from 'sonner';
 import DeleteModal from '@/components/modals/DeleteModal';
 
@@ -178,10 +174,18 @@ export default function AdminDashboard() {
 		return () => unsubscribe();
 	}, [router]);
 
+	const deniedAcess = () => {
+		router.push('/admin/login');
+	};
+
 	if (denied) {
 		return (
 			<div className='p-6 text-red-600 font-semibold'>
 				❌ Access Denied – You are not authorized to view this dashboard.
+				<button
+					onClick={deniedAcess}
+					className='px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer'
+				></button>
 			</div>
 		);
 	}
@@ -192,47 +196,6 @@ export default function AdminDashboard() {
 
 	return (
 		<div className='min-h-screen bg-gray-50'>
-			{/* Header */}
-			<div className='bg-white shadow-sm border-b'>
-				<div className='max-w-7xl mx-auto px-6 py-4'>
-					<div className='flex items-center justify-between'>
-						<div className='flex items-center space-x-3'>
-							<div className='w-10 h-10 bg-gradient-to-br rounded-xl flex items-center justify-center'>
-								{/* <Sparkles className='w-6 h-6 text-white' /> */}
-								<Image
-									src='/logo.png'
-									alt='frame lane logo'
-									width={80}
-									height={80}
-									// className='w-6 h-6'
-								/>
-							</div>
-							<div>
-								<h1 className='text-2xl font-bold text-gray-900'>
-									Frame.
-									<span className='font-light font-century-italic text-teal-700'>
-										lane
-									</span>{' '}
-									Admin
-								</h1>
-								<p className='text-sm text-gray-500'>
-									Order Management Dashboard
-								</p>
-							</div>
-						</div>
-						<div className='flex items-center space-x-4'>
-							<button className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
-								<Bell className='w-5 h-5 text-gray-600' />
-							</button>
-							<button className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
-								<Settings className='w-5 h-5 text-gray-600' />
-							</button>
-							<LogoutButton />
-						</div>
-					</div>
-				</div>
-			</div>
-
 			<div className='max-w-7xl mx-auto px-6 py-8'>
 				{/* Stats Grid */}
 				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8'>

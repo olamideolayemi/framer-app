@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import OrderStatusAnimation from '@/components/OrderStatusAnimations';
 import { Map } from 'lucide-react';
 import OrderCard from '@/components/OrderCard';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 
 export default function TrackOrderPage() {
 	const [orderId, setOrderId] = useState('');
@@ -14,7 +15,10 @@ export default function TrackOrderPage() {
 	const [loading, setLoading] = useState(false);
 	const [notFound, setNotFound] = useState(false);
 
-	const handleTrack = async () => {
+	const searchParams = useSearchParams();
+
+	const handleTrack = async (overrideId?: string) => {
+		const idToTrack = overrideId ?? orderId.trim();
 		if (!orderId.trim()) return;
 		setLoading(true);
 		setNotFound(false);
@@ -36,6 +40,14 @@ export default function TrackOrderPage() {
 			setLoading(false);
 		}
 	};
+
+	useEffect(() => {
+		const id = searchParams.get('id');
+		if (id) {
+			setOrderId(id);
+			handleTrack(id);
+		}
+	}, [searchParams]);
 
 	return (
 		<div className='min-h-screen bg-teal-600 bg-gradient-to-br from-teal-600 via-teal-400 to-teal-800 flex items-center justify-center p-4'>
@@ -78,7 +90,7 @@ export default function TrackOrderPage() {
 						</div>
 
 						<button
-							onClick={handleTrack}
+							onClick={() => handleTrack()}
 							className='w-full bg-teal-600 bg-gradient-to-r from-teal-600 to-teal-700 text-white py-3 rounded-xl font-medium hover:from-teal-700 hover:to-teal-800 transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none'
 						>
 							{loading ? (

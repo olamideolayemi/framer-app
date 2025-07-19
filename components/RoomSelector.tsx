@@ -23,7 +23,7 @@ const RoomSelector = ({ selected, onSelect }: RoomSelectorProps) => {
 						}`}
 					>
 						<div className='flex flex-col items-center space-y-2'>
-							<div className='w-16 h-12 bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg shadow-md'>
+							<div className='w-16 h-12 bg-gray-200 bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg shadow-md'>
 								<Image
 									src={room.image}
 									alt={room.name}

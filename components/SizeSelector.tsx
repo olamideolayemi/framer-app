@@ -28,7 +28,7 @@ const SizeSelector = ({ selected, onSelect }: SizeSelectorProps) => {
 					>
 						<div className='flex items-center justify-between'>
 							<div className='flex items-center space-x-3'>
-								<div className='w-8 h-8 bg-gradient-to-br from-teal-700 to-teal-600 rounded-lg flex items-center justify-center'>
+								<div className='w-8 h-8 bg-teal-600 bg-gradient-to-br from-teal-700 to-teal-600 rounded-lg flex items-center justify-center'>
 									<span className='text-white font-bold text-xs'>
 										{size.charAt(1)}
 									</span>

@@ -47,7 +47,7 @@ export default function LoginRegister() {
 	};
 
 	return (
-		<div className='min-h-screen bg-gradient-to-br from-teal-600 via-teal-400 to-teal-800 flex items-center justify-center p-4'>
+		<div className='min-h-screen bg-teal-600 bg-gradient-to-br from-teal-600 via-teal-400 to-teal-800 flex items-center justify-center p-4'>
 			<div className='absolute inset-0 bg-black bg-opacity-20'></div>
 
 			<div className='relative z-10 w-full max-w-md'>

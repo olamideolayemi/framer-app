@@ -13,8 +13,10 @@ import {
 	Truck,
 	XCircle,
 	Trash,
+	Map,
 } from 'lucide-react';
 import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const OrderCard = ({
@@ -22,8 +24,11 @@ const OrderCard = ({
 	onStatusChange,
 	isAdmin,
 	onDelete,
+	track,
 }: OrderCardProps) => {
 	const [showDetails, setShowDetails] = useState(false);
+	const pathname = usePathname();
+	const router = useRouter();
 
 	const statusConfig = {
 		Pending: { color: 'bg-yellow-100 text-yellow-800', icon: Clock },
@@ -34,6 +39,14 @@ const OrderCard = ({
 	};
 
 	const StatusIcon = statusConfig[order.status as OrderStatus]?.icon || Clock;
+
+	const isAdminPath = pathname?.startsWith('/admin');
+
+	const handleTrack = () => {
+		if (order?.id) {
+			router.push(`/track-order?id=${order.id}`);
+		}
+	};
 
 	return (
 		<div className='bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden'>
@@ -63,15 +76,6 @@ const OrderCard = ({
 						>
 							<MoreHorizontal className='w-4 h-4 text-gray-500' />
 						</button>
-						{isAdmin && onDelete && (
-							<button
-								onClick={() => onDelete(order.id!)}
-								className='p-1 rounded hover:bg-red-50 group'
-								title='Delete Order'
-							>
-								<Trash className='w-5 h-5 text-red-500 group-hover:text-red-700' />
-							</button>
-						)}
 					</div>
 				</div>
 
@@ -94,27 +98,52 @@ const OrderCard = ({
 										'seconds' in order.createdAt
 											? order.createdAt.seconds * 1000
 											: order.createdAt,
-								  ).toLocaleString() // <-- changed from toLocaleDateString()
+								  ).toLocaleString()
 								: 'N/A'}
 						</span>
 					</div>
-					{isAdmin && (
-						<select
-							value={order.status}
-							onChange={(e) => {
-								if (order?.id && onStatusChange) {
-									onStatusChange(order.id, e.target.value);
-								}
-							}}
-							className='px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-700 focus:border-teal-600'
+					<div className='flex items-center space-x-2 '>
+						<button
+							onClick={handleTrack}
+							className='p-1 rounded text-teal-600 hover:bg-teal-100 transition-colors cursor-pointer'
+							title='Track Order'
 						>
-							<option value='Pending'>Pending</option>
-							<option value='In Progress'>In Progress</option>
-							<option value='Shipped'>Shipped</option>
-							<option value='Delivered'>Delivered</option>
-							<option value='Cancelled'>Cancelled</option>
-						</select>
-					)}
+							<div className='flex items-center justify-center space-x-2'>
+								<Map className='w-5 h-5' />
+								<span>Track Order</span>
+							</div>
+						</button>
+						{isAdminPath && (
+							<div>
+								{isAdmin && onDelete && (
+									<button
+										onClick={() => onDelete(order.id!)}
+										className='p-1 rounded hover:bg-red-50 group'
+										title='Delete Order'
+									>
+										<Trash className='w-5 h-5 text-red-500 group-hover:text-red-700' />
+									</button>
+								)}
+								{isAdmin && (
+									<select
+										value={order.status}
+										onChange={(e) => {
+											if (order?.id && onStatusChange) {
+												onStatusChange(order.id, e.target.value);
+											}
+										}}
+										className='px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-700 focus:border-teal-600'
+									>
+										<option value='Pending'>Pending</option>
+										<option value='In Progress'>In Progress</option>
+										<option value='Shipped'>Shipped</option>
+										<option value='Delivered'>Delivered</option>
+										<option value='Cancelled'>Cancelled</option>
+									</select>
+								)}
+							</div>
+						)}
+					</div>
 				</div>
 
 				{showDetails && (
