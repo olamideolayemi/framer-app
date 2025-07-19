@@ -11,6 +11,8 @@ import {
 	getDocs,
 	serverTimestamp,
 	setDoc,
+	updateDoc,
+	deleteDoc,
 } from 'firebase/firestore';
 import ExportButton from '@/components/ExportButton';
 import LogoutButton from '@/components/LogoutButton';
@@ -29,9 +31,12 @@ import {
 import StatCard from '@/components/StatCard';
 import OrderCard from '@/components/OrderCard';
 import Image from 'next/image';
+import Loading from '../loading';
+import { toast } from 'sonner';
+import DeleteModal from '@/components/modals/DeleteModal';
 
 type Order = {
-	id?: string;
+	id: string;
 	name: string;
 	email: string;
 	contact: string;
@@ -53,6 +58,8 @@ export default function AdminDashboard() {
 	const [loading, setLoading] = useState(true);
 	const [denied, setDenied] = useState(false);
 	// const [adminEmail, setAdminEmail] = useState<string | null>(null);
+	const [deleteTarget, setDeleteTarget] = useState<Order | null>(null);
+	const [deleting, setDeleting] = useState(false);
 	const router = useRouter();
 
 	const filteredOrders = orders.filter((order) => {
@@ -77,15 +84,42 @@ export default function AdminDashboard() {
 		// totalRevenue: orders.reduce((sum, order) => sum + order.value, 0),
 	};
 
-	const handleStatusChange = (
+	const handleStatusChange = async (
 		orderId: string | undefined,
 		newStatus: string,
 	) => {
-		setOrders((prev) =>
-			prev.map((order) =>
-				order.id === orderId ? { ...order, status: newStatus } : order,
-			),
-		);
+		if (!orderId) return;
+
+		// Update Firestore
+		try {
+			const orderRef = doc(db, 'orders', orderId);
+			await updateDoc(orderRef, { status: newStatus });
+
+			setOrders((prev) =>
+				prev.map((order) =>
+					order.id === orderId ? { ...order, status: newStatus } : order,
+				),
+			);
+		} catch (error) {
+			console.error('Failed to update order status:', error);
+		}
+	};
+
+	const handleDelete = async () => {
+		if (!deleteTarget?.id) return;
+
+		setDeleting(true);
+		try {
+			await deleteDoc(doc(db, 'orders', deleteTarget.id));
+			setOrders((prev) => prev.filter((order) => order.id !== deleteTarget.id));
+			toast.success(`Order ${deleteTarget.id} deleted`);
+			setDeleteTarget(null);
+		} catch (err) {
+			console.error('Delete failed:', err);
+			toast.error('Failed to delete order. Please try again.');
+		} finally {
+			setDeleting(false);
+		}
 	};
 
 	useEffect(() => {
@@ -153,7 +187,7 @@ export default function AdminDashboard() {
 	}
 
 	if (loading) {
-		return <p className='p-6 text-gray-600'>Loading admin dashboard...</p>;
+		return <Loading />;
 	}
 
 	return (
@@ -175,7 +209,11 @@ export default function AdminDashboard() {
 							</div>
 							<div>
 								<h1 className='text-2xl font-bold text-gray-900'>
-									Frame.<span className='font-light font-century-italic text-teal-700'>lane</span>  Admin
+									Frame.
+									<span className='font-light font-century-italic text-teal-700'>
+										lane
+									</span>{' '}
+									Admin
 								</h1>
 								<p className='text-sm text-gray-500'>
 									Order Management Dashboard
@@ -304,15 +342,16 @@ export default function AdminDashboard() {
 							{filteredOrders.map((order) => (
 								<OrderCard
 									key={order.id}
+									isAdmin
 									order={order as any}
 									onStatusChange={handleStatusChange}
+									onDelete={() => setDeleteTarget(order)}
 								/>
 							))}
 						</div>
 					)}
 				</div>
 
-				{/* Pagination */}
 				{filteredOrders.length > 0 && (
 					<div className='flex items-center justify-center mt-8'>
 						<div className='flex items-center space-x-2'>
@@ -329,6 +368,12 @@ export default function AdminDashboard() {
 					</div>
 				)}
 			</div>
+			<DeleteModal
+				deleteTarget={deleteTarget}
+				deleting={deleting}
+				onCancel={() => setDeleteTarget(null)}
+				onConfirm={handleDelete}
+			/>
 		</div>
 	);
 }

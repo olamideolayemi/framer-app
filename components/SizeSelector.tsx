@@ -1,5 +1,6 @@
 import { SIZE_OPTIONS } from '@/constants';
 import { PRICING } from '@/constants/pricing';
+import { SizeSelectorProps } from '@/types';
 import { ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 

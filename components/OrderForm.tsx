@@ -3,11 +3,12 @@
 import { useState } from 'react';
 import { storage, db, auth } from '@/lib/firebase';
 import { addDoc, collection } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes } from 'firebase/storage';
 import { signInAnonymously } from 'firebase/auth';
 import { Shield, Award, ShoppingCart, Zap, Check } from 'lucide-react';
 import { ROOM_OPTIONS } from '@/constants';
 import { PRICING } from '@/constants/pricing';
+import { OrderFormProps } from '@/types';
 
 const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 	const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 	});
 	const [submitted, setSubmitted] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const currentUser = auth.currentUser;
 
 	const handleInputChange = (field: string, value: string) => {
 		setFormData((prev) => ({ ...prev, [field]: value }));
@@ -75,7 +77,10 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 		// console.log('📦 Order submitted:', orderData);
 
 		try {
-			await addDoc(collection(db, 'orders'), orderData);
+			await addDoc(collection(db, 'orders'), {
+				userId: currentUser?.uid || null,
+				...orderData,
+			});
 			setSubmitted(true);
 		} catch (error) {
 			console.error('Error saving order:', error);

@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frame Lane Prototype App
+
+## Project Overview
+Frame Lane is a company specializing in picture framing. This prototype app enables users to upload images, select frame styles, room settings, and sizes, and place orders without needing direct communication with the admin. The app streamlines the ordering process by sending order details directly to an admin dashboard. Future plans include integrating a payment channel for immediate transactions.
+
+## Features
+- **Image Upload:** Users can upload photos via drag-and-drop or file selection. Supported formats include JPG, PNG, and HEIC up to 10MB.
+- **Frame Style Selection:** Choose from multiple frame styles with visual previews.
+- **Room Selection:** Select a room setting to preview how the framed picture will look in context.
+- **Size & Pricing:** Select from various sizes with clear pricing and free shipping.
+- **Order Form:** Submit contact and delivery details with validation. Orders are saved to Firebase Firestore and images uploaded to Firebase Storage.
+- **Order Confirmation:** Users receive a confirmation with order status and contact information.
+- **Admin Dashboard:** Admins can view and manage orders through a dedicated dashboard.
+
+## Technology Stack
+- **Next.js:** React framework for server-side rendering and static site generation.
+- **React:** UI library for building interactive components.
+- **Firebase:**
+  - Firestore: NoSQL database for storing order data.
+  - Storage: Secure storage for uploaded images.
+  - Authentication: Anonymous sign-in for order submission.
+- **Tailwind CSS:** Utility-first CSS framework for styling.
+- **Lucide-react:** Icon library used throughout the UI.
+- **TypeScript:** Static typing for safer and more maintainable code.
+- **Vercel:** Recommended platform for deployment.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js installed on your machine.
+- A Firebase project set up with Firestore and Storage enabled.
 
+### Installation
+1. Clone the repository.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Configure Firebase credentials in the project.
+
+### Running the Development Server
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
+
+### Building for Production
+```bash
+npm run build
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Deployment
+The app can be deployed easily on platforms like Vercel. Refer to [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for details.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
+- `app/`: Main application pages and layout components.
+- `components/`: Reusable React components such as ImageUploader, FrameSelector, OrderForm, etc.
+- `lib/`: Firebase configuration and utility functions.
+- `constants/`: Static data including frame options, sizes, and pricing.
+- `public/`: Static assets like images and fonts.
+- `styles/`: Global CSS and Tailwind configuration.
+- `types/`: TypeScript type definitions.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Usage Guide
+1. Upload your photo using drag-and-drop or file selection.
+2. Select your preferred frame style.
+3. Choose a room setting to preview your framed picture.
+4. Select the size and view pricing details.
+5. Fill out the order form with your contact and delivery information.
+6. Submit your order and receive confirmation with status updates.
 
-## Learn More
+## Admin Dashboard
+Admins can log in to the dashboard to view and manage incoming orders. The dashboard provides order details and status tracking.
 
-To learn more about Next.js, take a look at the following resources:
+## Future Enhancements
+- Integration of a payment channel for immediate transactions.
+- Addition of more frame styles, sizes, and room options.
+- Enhanced order tracking and notification features.
+- Improved admin dashboard functionalities.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contact and Support
+For further inquiries or support, contact:
+- Phone: +2349031585326
+- Email: theframelane@gmail.com
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This documentation provides an overview and guide to the Frame Lane prototype app. For any questions or contributions, please reach out via the contact information above.

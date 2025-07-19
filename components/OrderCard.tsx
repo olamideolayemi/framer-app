@@ -1,3 +1,4 @@
+import { OrderCardProps, OrderStatus } from '@/types';
 import {
 	Activity,
 	Calendar,
@@ -11,11 +12,17 @@ import {
 	Phone,
 	Truck,
 	XCircle,
+	Trash,
 } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-const OrderCard = ({ order, onStatusChange }: OrderCardProps) => {
+const OrderCard = ({
+	order,
+	onStatusChange,
+	isAdmin,
+	onDelete,
+}: OrderCardProps) => {
 	const [showDetails, setShowDetails] = useState(false);
 
 	const statusConfig = {
@@ -33,7 +40,7 @@ const OrderCard = ({ order, onStatusChange }: OrderCardProps) => {
 			<div className='p-6'>
 				<div className='flex items-center justify-between mb-4'>
 					<div className='flex items-center space-x-3'>
-						<div className='w-10 h-10 bg-gradient-to-br from-teal-700 to-teal-600 rounded-xl flex items-center justify-center'>
+						<div className='w-10 h-10 bg-teal-600 bg-gradient-to-br from-teal-700 to-teal-600 rounded-xl flex items-center justify-center'>
 							<Package className='w-5 h-5 text-white' />
 						</div>
 						<div>
@@ -56,6 +63,15 @@ const OrderCard = ({ order, onStatusChange }: OrderCardProps) => {
 						>
 							<MoreHorizontal className='w-4 h-4 text-gray-500' />
 						</button>
+						{isAdmin && onDelete && (
+							<button
+								onClick={() => onDelete(order.id!)}
+								className='p-1 rounded hover:bg-red-50 group'
+								title='Delete Order'
+							>
+								<Trash className='w-5 h-5 text-red-500 group-hover:text-red-700' />
+							</button>
+						)}
 					</div>
 				</div>
 
@@ -82,21 +98,23 @@ const OrderCard = ({ order, onStatusChange }: OrderCardProps) => {
 								: 'N/A'}
 						</span>
 					</div>
-					<select
-						value={order.status}
-						onChange={(e) => {
-							if (order?.id) {
-								onStatusChange(order.id, e.target.value);
-							}
-						}}
-						className='px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-700 focus:border-teal-600'
-					>
-						<option value='Pending'>Pending</option>
-						<option value='In Progress'>In Progress</option>
-						<option value='Shipped'>Shipped</option>
-						<option value='Delivered'>Delivered</option>
-						<option value='Cancelled'>Cancelled</option>
-					</select>
+					{isAdmin && (
+						<select
+							value={order.status}
+							onChange={(e) => {
+								if (order?.id && onStatusChange) {
+									onStatusChange(order.id, e.target.value);
+								}
+							}}
+							className='px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-700 focus:border-teal-600'
+						>
+							<option value='Pending'>Pending</option>
+							<option value='In Progress'>In Progress</option>
+							<option value='Shipped'>Shipped</option>
+							<option value='Delivered'>Delivered</option>
+							<option value='Cancelled'>Cancelled</option>
+						</select>
+					)}
 				</div>
 
 				{showDetails && (
