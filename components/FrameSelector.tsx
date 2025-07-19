@@ -7,9 +7,9 @@ const FrameSelector = ({ selected, onSelect }: FrameSelectorProps) => {
 	const frameColors = {
 		black: 'bg-black',
 		white: 'bg-white border-2 border-gray-200',
-		wood: 'bg-gradient-to-br from-amber-600 to-amber-800',
-		gold: 'bg-gradient-to-br from-yellow-400 to-yellow-600',
-		silver: 'bg-gradient-to-br from-gray-400 to-gray-600',
+		wood: 'bg-amber-600 bg-gradient-to-br from-amber-600 to-amber-800',
+		gold: 'bg-yellow-400 bg-gradient-to-br from-yellow-400 to-yellow-600',
+		silver: 'bg-gray-400 bg-gradient-to-br from-gray-400 to-gray-600',
 	};
 
 	return (
