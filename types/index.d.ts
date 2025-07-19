@@ -55,6 +55,7 @@ declare type Timestamp = { seconds: number; nanoseconds?: number };
 declare type OrderCardProps = {
 	order: Order;
 	onStatusChange: (id: string, status: string) => void;
+	isAdmin?: boolean;
 };
 
 declare type StatCardProps = {

@@ -11,6 +11,7 @@ import {
 	getDocs,
 	serverTimestamp,
 	setDoc,
+	updateDoc,
 } from 'firebase/firestore';
 import ExportButton from '@/components/ExportButton';
 import LogoutButton from '@/components/LogoutButton';
@@ -77,15 +78,25 @@ export default function AdminDashboard() {
 		// totalRevenue: orders.reduce((sum, order) => sum + order.value, 0),
 	};
 
-	const handleStatusChange = (
+	const handleStatusChange = async (
 		orderId: string | undefined,
 		newStatus: string,
 	) => {
-		setOrders((prev) =>
-			prev.map((order) =>
-				order.id === orderId ? { ...order, status: newStatus } : order,
-			),
-		);
+		if (!orderId) return;
+
+		// Update Firestore
+		try {
+			const orderRef = doc(db, 'orders', orderId);
+			await updateDoc(orderRef, { status: newStatus });
+
+			setOrders((prev) =>
+				prev.map((order) =>
+					order.id === orderId ? { ...order, status: newStatus } : order,
+				),
+			);
+		} catch (error) {
+			console.error('Failed to update order status:', error);
+		}
 	};
 
 	useEffect(() => {
@@ -175,7 +186,11 @@ export default function AdminDashboard() {
 							</div>
 							<div>
 								<h1 className='text-2xl font-bold text-gray-900'>
-									Frame.<span className='font-light font-century-italic text-teal-700'>lane</span>  Admin
+									Frame.
+									<span className='font-light font-century-italic text-teal-700'>
+										lane
+									</span>{' '}
+									Admin
 								</h1>
 								<p className='text-sm text-gray-500'>
 									Order Management Dashboard
@@ -304,6 +319,7 @@ export default function AdminDashboard() {
 							{filteredOrders.map((order) => (
 								<OrderCard
 									key={order.id}
+									isAdmin
 									order={order as any}
 									onStatusChange={handleStatusChange}
 								/>
@@ -312,7 +328,6 @@ export default function AdminDashboard() {
 					)}
 				</div>
 
-				{/* Pagination */}
 				{filteredOrders.length > 0 && (
 					<div className='flex items-center justify-center mt-8'>
 						<div className='flex items-center space-x-2'>
