@@ -2,12 +2,24 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/authContext';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import {
+	collection,
+	query,
+	where,
+	getDocs,
+	deleteDoc,
+	doc,
+} from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 import LoadingScreen from '@/components/LoadingScreen';
 import OrderCard from '@/components/OrderCard';
 import { Filter, Package, Search } from 'lucide-react';
+import DeleteModal from '@/components/modals/DeleteModal';
+import { Order } from '@/types';
+import { toast } from 'sonner';
+
+type SafeOrder = Order & { id: string };
 
 export default function OrdersPage() {
 	const { user, loading } = useAuth();
@@ -16,6 +28,12 @@ export default function OrdersPage() {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [statusFilter, setStatusFilter] = useState('all');
 	const [checkingAuth, setCheckingAuth] = useState(true);
+	const [deleteTarget, setDeleteTarget] = useState<SafeOrder | null>(null);
+	const [deleting, setDeleting] = useState(false);
+
+	const savedOrders = orders.filter(
+		(order) => order.status?.toLowerCase?.() === 'draft',
+	);
 
 	const filteredOrders = orders.filter((order) => {
 		const matchesSearch =
@@ -29,6 +47,27 @@ export default function OrdersPage() {
 
 		return matchesSearch && matchesStatus;
 	});
+
+	const handleDelete = async (orderId: string) => {
+		if (!deleteTarget?.id) return;
+
+		setDeleting(true);
+		try {
+			await deleteDoc(doc(db, 'savedOrders', deleteTarget.id));
+			setOrders((prev) => prev.filter((order) => order.id !== deleteTarget.id));
+			toast.success(`Draft ${deleteTarget.id} deleted`);
+			setDeleteTarget(null);
+		} catch (err) {
+			console.error('Delete failed:', err);
+			toast.error('Failed to delete order. Please try again.');
+		} finally {
+			setDeleting(false);
+		}
+	};
+
+	const regularOrders = filteredOrders.filter(
+		(order) => order.status !== 'draft',
+	);
 
 	useEffect(() => {
 		if (!loading) {
@@ -45,16 +84,29 @@ export default function OrdersPage() {
 	useEffect(() => {
 		if (!loading && user) {
 			const fetchOrders = async () => {
-				const q = query(
+				// Fetch placed orders
+				const placedQuery = query(
 					collection(db, 'orders'),
 					where('userId', '==', user.uid),
 				);
-				const snapshot = await getDocs(q);
-				const data = snapshot.docs.map((doc) => ({
+				const placedSnap = await getDocs(placedQuery);
+				const placedData = placedSnap.docs.map((doc) => ({
 					id: doc.id,
 					...doc.data(),
 				}));
-				setOrders(data);
+
+				// Fetch saved orders
+				const savedQuery = query(
+					collection(db, 'savedOrders'),
+					where('userId', '==', user.uid),
+				);
+				const savedSnap = await getDocs(savedQuery);
+				const savedData = savedSnap.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+
+				setOrders([...placedData, ...savedData]);
 			};
 
 			fetchOrders().catch(console.error);
@@ -105,11 +157,11 @@ export default function OrdersPage() {
 				<div className='space-y-6'>
 					<div className='flex items-center justify-between'>
 						<h2 className='text-xl font-bold text-gray-900'>
-							Orders ({filteredOrders.length})
+							Placed Orders ({regularOrders.length})
 						</h2>
 						<div className='flex items-center space-x-2 text-sm text-gray-500'>
 							<span>
-								Showing {filteredOrders.length} of {orders.length} orders
+								Showing {regularOrders.length} of {orders.length} orders
 							</span>
 						</div>
 					</div>
@@ -118,7 +170,7 @@ export default function OrdersPage() {
 						<LoadingScreen />
 					) : (
 						<>
-							{filteredOrders.length === 0 ? (
+							{regularOrders.length === 0 ? (
 								<div className='bg-white rounded-2xl shadow-lg border border-gray-100 p-12 text-center'>
 									<Package className='w-16 h-16 text-gray-400 mx-auto mb-4' />
 									<h3 className='text-lg font-medium text-gray-900 mb-2'>
@@ -132,7 +184,7 @@ export default function OrdersPage() {
 								</div>
 							) : (
 								<div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-									{filteredOrders.map((order) => (
+									{regularOrders.map((order) => (
 										<OrderCard
 											key={order.id}
 											isAdmin
@@ -146,7 +198,50 @@ export default function OrdersPage() {
 						</>
 					)}
 				</div>
+
+				<div className='space-y-6 mt-6'>
+					<div className='flex items-center justify-between'>
+						<h2 className='text-xl font-bold text-gray-900'>
+							Saved Orders ({savedOrders.length})
+						</h2>
+					</div>
+
+					{loading ? (
+						<LoadingScreen />
+					) : (
+						<>
+							{savedOrders.length === 0 ? (
+								<div className='bg-white rounded-2xl shadow-lg border border-gray-100 p-12 text-center'>
+									<Package className='w-16 h-16 text-gray-400 mx-auto mb-4' />
+									<h3 className='text-lg font-medium text-gray-900 mb-2'>
+										No orders in drafts
+									</h3>
+								</div>
+							) : (
+								<div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+									{savedOrders.map((order) => (
+										<OrderCard
+											key={order.id}
+											isAdmin
+											order={order as any}
+											onStatusChange={() => {}}
+											onDelete={() => setDeleteTarget(order)}
+										/>
+									))}
+								</div>
+							)}
+						</>
+					)}
+				</div>
 			</div>
+			<DeleteModal
+				deleteTarget={deleteTarget}
+				deleting={deleting}
+				onCancel={() => setDeleteTarget(null)}
+				onConfirm={() => {
+					if (deleteTarget?.id) handleDelete(deleteTarget.id);
+				}}
+			/>
 		</div>
 	);
 }

@@ -36,11 +36,13 @@ const OrderCard = ({
 		Shipped: { color: 'bg-green-100 text-green-800', icon: Truck },
 		Delivered: { color: 'bg-emerald-100 text-emerald-800', icon: CheckCircle },
 		Cancelled: { color: 'bg-red-100 text-red-800', icon: XCircle },
+		draft: { color: 'bg-gray-100 text-gray-800', icon: Clock },
 	};
 
 	const StatusIcon = statusConfig[order.status as OrderStatus]?.icon || Clock;
 
 	const isAdminPath = pathname?.startsWith('/admin');
+	const isTrackingPath = pathname?.startsWith('/track-order');
 
 	const handleTrack = () => {
 		if (order?.id) {
@@ -103,16 +105,44 @@ const OrderCard = ({
 						</span>
 					</div>
 					<div className='flex items-center space-x-2 '>
-						<button
-							onClick={handleTrack}
-							className='p-1 rounded text-teal-600 hover:bg-teal-100 transition-colors cursor-pointer'
-							title='Track Order'
-						>
-							<div className='flex items-center justify-center space-x-2'>
-								<Map className='w-5 h-5' />
-								<span>Track Order</span>
-							</div>
-						</button>
+						{!isTrackingPath && (
+							<>
+								{order.status === 'draft' ? (
+									<button
+										onClick={() => router.push(``)}
+										// onClick={() => router.push(`/resume-order?id=${order.id}`)}
+										className='p-1 rounded text-teal-600 hover:bg-teal-100 transition-colors cursor-pointer'
+										title='Resume Order'
+									>
+										<div className='flex items-center justify-center space-x-2'>
+											<Package className='w-5 h-5' />
+											<span>Resume Order</span>
+										</div>
+									</button>
+								) : (
+									<button
+										onClick={handleTrack}
+										className='p-1 rounded text-teal-600 hover:bg-teal-100 transition-colors cursor-pointer'
+										title='Track Order'
+									>
+										<div className='flex items-center justify-center space-x-2'>
+											<Map className='w-5 h-5' />
+											<span>Track Order</span>
+										</div>
+									</button>
+								)}
+							</>
+						)}
+						{order.status === 'draft' && onDelete &&  (
+							<button
+								onClick={() => onDelete(order.id!)}
+								className='p-1 rounded hover:bg-red-50 group'
+								title='Delete Saved Order'
+							>
+								<Trash className='w-5 h-5 text-red-500 group-hover:text-red-700' />
+							</button>
+						)}
+
 						{isAdminPath && (
 							<div>
 								{isAdmin && onDelete && (

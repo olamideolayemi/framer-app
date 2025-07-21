@@ -9,6 +9,7 @@ import { AlertCircle, Eye, EyeOff, LogIn } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function LoginRegister() {
 	const router = useRouter();
@@ -40,6 +41,7 @@ export default function LoginRegister() {
 					router.push(redirect);
 				}
 			}
+			toast.success('Welcome back!');
 		} catch (err: any) {
 			setError(err.message);
 		}

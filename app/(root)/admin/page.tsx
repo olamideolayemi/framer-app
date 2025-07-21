@@ -180,12 +180,12 @@ export default function AdminDashboard() {
 
 	if (denied) {
 		return (
-			<div className='p-6 text-red-600 font-semibold'>
+			<div className='flex flex-col items-center p-6 text-red-600 font-semibold'>
 				❌ Access Denied – You are not authorized to view this dashboard.
 				<button
 					onClick={deniedAcess}
-					className='px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer'
-				></button>
+					className='px-4 py-2 mt-8 border text-gray-900 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer'
+				>Back to login</button>
 			</div>
 		);
 	}

@@ -73,7 +73,8 @@ declare type OrderStatus =
 	| 'In Progress'
 	| 'Shipped'
 	| 'Delivered'
-	| 'Cancelled';
+	| 'Cancelled'
+	| 'draft';
 
 export interface UserInfo {
 	uid: string;

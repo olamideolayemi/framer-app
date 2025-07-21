@@ -1,14 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { storage, db, auth } from '@/lib/firebase';
 import { addDoc, collection } from 'firebase/firestore';
 import { ref, uploadBytes } from 'firebase/storage';
-import { signInAnonymously } from 'firebase/auth';
+import { signInAnonymously, User } from 'firebase/auth';
 import { Shield, Award, ShoppingCart, Zap, Check } from 'lucide-react';
 import { ROOM_OPTIONS } from '@/constants';
 import { PRICING } from '@/constants/pricing';
 import { OrderFormProps } from '@/types';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import clsx from 'clsx';
 
 const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 	const [formData, setFormData] = useState({
@@ -20,13 +23,33 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 	});
 	const [submitted, setSubmitted] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const currentUser = auth.currentUser;
+	const [mounted, setMounted] = useState(false);
+	const [user, setUser] = useState<User | null>(null);
+	const router = useRouter();
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	useEffect(() => {
+		const unsubscribe = auth.onAuthStateChanged((user) => {
+			setUser(user);
+			if (user) {
+				setFormData((prev) => ({
+					...prev,
+					email: user.email || '',
+					name: user.displayName || '',
+				}));
+			}
+		});
+		return () => unsubscribe();
+	}, []);
 
 	const handleInputChange = (field: string, value: string) => {
 		setFormData((prev) => ({ ...prev, [field]: value }));
 	};
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleCheckout = async (e: React.FormEvent) => {
 		e.preventDefault();
 
 		if (!auth.currentUser) {
@@ -40,114 +63,126 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 			!formData.email ||
 			!formData.address
 		) {
-			alert('Please fill in all fields and upload an image.');
-			return;
+			toast.error('Please fill in all required fields and upload an image.');
+			return null;
 		}
 
 		const phoneRegex = /^[\d\s()+-]+$/;
 		if (!phoneRegex.test(formData.phone)) {
-			alert('Please enter a valid phone number.');
+			toast.error('Please enter a valid phone number.');
 			return;
 		}
 
-		let filePath = '';
-
-		if (typeof image === 'string' && image.startsWith('data:image/')) {
-			const response = await fetch(image); // convert base64 to blob
-			const blob = await response.blob();
-			// const fileName = `order_${Date.now()}.png`;
-			filePath = `orders/order_${Date.now()}.png`;
-			const storageRef = ref(storage, filePath);
-			await uploadBytes(storageRef, blob);
-		} else {
-			alert('Please upload a valid image.');
-			return;
-		}
-
-		const orderData = {
-			...formData,
-			frame,
-			size,
-			room,
-			image: filePath,
-			status: 'Pending',
-			createdAt: new Date().toISOString(),
-		};
-
-		// console.log('📦 Order submitted:', orderData);
+		setLoading(true);
 
 		try {
-			await addDoc(collection(db, 'orders'), {
-				userId: currentUser?.uid || null,
-				...orderData,
-			});
-			setSubmitted(true);
-		} catch (error) {
-			console.error('Error saving order:', error);
-			alert('Failed to submit order. Try again.');
-		}
+			let filePath = '';
 
-		setTimeout(() => {
-			setSubmitted(true);
+			if (typeof image === 'string' && image.startsWith('data:image/')) {
+				const response = await fetch(image);
+				const blob = await response.blob();
+				// const fileName = `order_${Date.now()}.png`;
+				filePath = `orders/order_${Date.now()}.png`;
+				const storageRef = ref(storage, filePath);
+				await uploadBytes(storageRef, blob);
+			} else {
+				toast.error('Please upload a valid image.');
+				return;
+			}
+
+			const orderData = {
+				...formData,
+				frame,
+				size,
+				room,
+				image: filePath,
+				status: 'Pending',
+				createdAt: new Date().toISOString(),
+			};
+
+			// try {
+			// 	await addDoc(collection(db, 'orders'), {
+			// 		userId: currentUser?.uid || null,
+			// 		...orderData,
+			// 	});
+			// 	toast.success(`Order sent successfully!`);
+			// 	setSubmitted(true);
+			// } catch (error) {
+			// 	console.error('Error saving order:', error);
+			// 	toast.error('Failed to submit order. Try again.');
+			// }
+
+			// setTimeout(() => {
+			// 	setSubmitted(true);
+			// 	setLoading(false);
+			// }, 2000);
+
+			localStorage.setItem('checkoutOrder', JSON.stringify(orderData));
+
+			router.push('/checkout');
+		} catch (error) {
+			console.error('Checkout error:', error);
+			toast.error('Something went wrong during checkout.');
+		} finally {
 			setLoading(false);
-		}, 2000);
+		}
 	};
 
-	if (submitted) {
-		return (
-			<div className='bg-white rounded-3xl shadow-2xl overflow-hidden'>
-				<div className='bg-teal-600 not-first:bg-gradient-to-r from-teal-500 to-teal-700 p-6 text-center'>
-					<div className='w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4'>
-						<Check className='w-10 h-10 text-teal-600' />
-					</div>
-					<h3 className='text-2xl font-bold text-white mb-2'>
-						Order Confirmed!
-					</h3>
-					<p className='text-green-100'>Your custom frame is being prepared</p>
-				</div>
+	// if (submitted) {
+	// 	return (
+	// 		<div className='bg-white rounded-3xl shadow-2xl overflow-hidden'>
+	// 			<div className='bg-teal-600 not-first:bg-gradient-to-r from-teal-500 to-teal-700 p-6 text-center'>
+	// 				<div className='w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4'>
+	// 					<Check className='w-10 h-10 text-teal-600' />
+	// 				</div>
+	// 				<h3 className='text-2xl font-bold text-white mb-2'>
+	// 					Order Confirmed!
+	// 				</h3>
+	// 				<p className='text-green-100'>Your custom frame is being prepared</p>
+	// 			</div>
 
-				<div className='p-6'>
-					<div className='space-y-4'>
-						<div className='flex items-center space-x-3'>
-							<div className='w-8 h-8 bg-green-100 rounded-full flex items-center justify-center'>
-								<Check className='w-5 h-5 text-green-600' />
-							</div>
-							<p className='text-gray-700'>Order received and confirmed</p>
-						</div>
-						<div className='flex items-center space-x-3'>
-							<div className='w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center'>
-								<span className='text-gray-400 font-bold'>2</span>
-							</div>
-							<p className='text-gray-500'>
-								Processing and printing (2-3 business days)
-							</p>
-						</div>
-						<div className='flex items-center space-x-3'>
-							<div className='w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center'>
-								<span className='text-gray-400 font-bold'>3</span>
-							</div>
-							<p className='text-gray-500'>
-								Shipping and delivery (3-5 business days)
-							</p>
-						</div>
-					</div>
+	// 			<div className='p-6'>
+	// 				<div className='space-y-4'>
+	// 					<div className='flex items-center space-x-3'>
+	// 						<div className='w-8 h-8 bg-green-100 rounded-full flex items-center justify-center'>
+	// 							<Check className='w-5 h-5 text-green-600' />
+	// 						</div>
+	// 						<p className='text-gray-700'>Order received and confirmed</p>
+	// 					</div>
+	// 					<div className='flex items-center space-x-3'>
+	// 						<div className='w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center'>
+	// 							<span className='text-gray-400 font-bold'>2</span>
+	// 						</div>
+	// 						<p className='text-gray-500'>
+	// 							Processing and printing (2-3 business days)
+	// 						</p>
+	// 					</div>
+	// 					<div className='flex items-center space-x-3'>
+	// 						<div className='w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center'>
+	// 							<span className='text-gray-400 font-bold'>3</span>
+	// 						</div>
+	// 						<p className='text-gray-500'>
+	// 							Shipping and delivery (3-5 business days)
+	// 						</p>
+	// 					</div>
+	// 				</div>
 
-					<div className='mt-6 p-4 bg-gray-50 rounded-2xl'>
-						<p className='text-sm text-gray-600 mb-2'>We'll send updates to:</p>
-						<p className='font-medium text-gray-800'>{formData.email}</p>
-						<p className='font-medium text-gray-800'>{formData.phone}</p>
-					</div>
-					<div className='mt-6 p-4 bg-gray-50 rounded-2xl'>
-						<p className='text-sm text-gray-600 mb-2'>
-							For further enquires or if you would like to speak to us
-						</p>
-						<p className='font-medium text-gray-800'>+2349031585326</p>
-						<p className='font-medium text-gray-800'>theframelane@gmail.com</p>
-					</div>
-				</div>
-			</div>
-		);
-	}
+	// 				<div className='mt-6 p-4 bg-gray-50 rounded-2xl'>
+	// 					<p className='text-sm text-gray-600 mb-2'>We'll send updates to:</p>
+	// 					<p className='font-medium text-gray-800'>{formData.email}</p>
+	// 					<p className='font-medium text-gray-800'>{formData.phone}</p>
+	// 				</div>
+	// 				<div className='mt-6 p-4 bg-gray-50 rounded-2xl'>
+	// 					<p className='text-sm text-gray-600 mb-2'>
+	// 						For further enquires or if you would like to speak to us
+	// 					</p>
+	// 					<p className='font-medium text-gray-800'>+2349031585326</p>
+	// 					<p className='font-medium text-gray-800'>theframelane@gmail.com</p>
+	// 				</div>
+	// 			</div>
+	// 		</div>
+	// 	);
+	// }
 
 	return (
 		<div className='bg-white rounded-3xl shadow-2xl overflow-hidden'>
@@ -162,7 +197,7 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 			</div>
 
 			<form
-				onSubmit={handleSubmit}
+				// onSubmit={handleSubmit}
 				className='p-6'
 			>
 				<div className='space-y-6'>
@@ -173,8 +208,15 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 						<input
 							type='text'
 							value={formData.name}
+							readOnly={mounted && !!auth.currentUser?.displayName}
 							onChange={(e) => handleInputChange('name', e.target.value)}
-							className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-700 focus:border-teal-500 transition-colors'
+							className={clsx(
+								'w-full px-4 py-3 border border-gray-300 rounded-xl transition-colors focus:ring-2 focus:ring-teal-700 focus:border-teal-500',
+								{
+									'bg-gray-200 cursor-not-allowed':
+										mounted && !!auth.currentUser?.displayName,
+								},
+							)}
 							placeholder='Enter your full name'
 							required
 						/>
@@ -203,8 +245,15 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 							type='email'
 							name='email'
 							value={formData.email}
+							readOnly={mounted && !!auth.currentUser?.email}
 							onChange={(e) => handleInputChange('email', e.target.value)}
-							className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-700 focus:border-teal-500 transition-colors'
+							className={clsx(
+								'w-full px-4 py-3 border border-gray-300 rounded-xl transition-colors focus:ring-2 focus:ring-teal-700 focus:border-teal-500',
+								{
+									'bg-gray-200 cursor-not-allowed':
+										mounted && !!auth.currentUser?.email,
+								},
+							)}
 							placeholder='Enter your email address'
 							required
 						/>
@@ -270,21 +319,31 @@ const OrderForm = ({ image, frame, size, room }: OrderFormProps) => {
 				</div>
 
 				<button
-					type='submit'
+					type='button'
+					onClick={handleCheckout}
 					disabled={loading}
-					className='w-full mt-6 bg-teal-600 bg-gradient-to-r from-teal-600 to-teal-700 text-white py-4 rounded-2xl font-bold text-lg hover:from-teal-700 hover:to-teal-800 transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none'
-				>
-					{loading ? (
-						<div className='flex items-center justify-center space-x-2'>
-							<div className='animate-spin rounded-full h-5 w-5 border-b-2 border-white'></div>
-							<span>Processing Order...</span>
-						</div>
-					) : (
-						<div className='flex items-center justify-center space-x-2'>
-							<span>Place Order</span>
-							<Zap className='w-5 h-5' />
-						</div>
+					className={clsx(
+						'w-full mt-6 bg-teal-600 bg-gradient-to-r from-teal-600 to-teal-700 text-white py-4 rounded-2xl font-bold text-lg transition-all duration-200 shadow-lg',
+						{
+							'hover:from-teal-700 hover:to-teal-800 transform hover:scale-105':
+								!loading,
+							'opacity-50 cursor-not-allowed': loading,
+						},
 					)}
+				>
+					<div className='flex items-center justify-center space-x-2'>
+						{loading ? (
+							<>
+								<Zap className='animate-spin w-5 h-5' />
+								<span>Processing...</span>
+							</>
+						) : (
+							<>
+								<span>Checkout</span>
+								<ShoppingCart className='w-5 h-5' />
+							</>
+						)}
+					</div>
 				</button>
 
 				<div className='mt-4 flex items-center justify-center space-x-6 text-sm text-gray-500'>
